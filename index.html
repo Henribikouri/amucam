@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>AMUCAM </title>
+    <meta name="description" content="AMUCAM : L'élite de la médecine d'urgence au Cameroun. Formation, standardisation des soins critiques et appui institutionnel SAMU. Partenaire stratégique en santé.">
+    <meta name="keywords" content="AMUCAM, Médecine d'urgence Cameroun, SAMU Cameroun, Urgentistes, Santé Cameroun, Formation médicale, Banque Mondiale santé">
+    <meta name="author" content="AMUCAM">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.amucam.cm/">
+    <meta property="og:title" content="AMUCAM | Excellence en Médecine d'Urgence">
+    <meta property="og:description" content="Découvrez l'agence qui définit les standards de l'urgence vitale au Cameroun.">
+    <meta property="og:image" content="assets/img/image.png"> <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="AMUCAM | Urgence Médicale Cameroun">
+    <meta property="twitter:description" content="Standardisation et formation aux soins critiques.">
+
+    <link rel="icon" type="image/png" href="amu1.jpeg">
+    <link rel="apple-touch-icon" href="amu1.jpeg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+    .medical-blue { color: #0056b3; }
+    .bg-medical { background-color: #0056b3; }
+    
+    /* Slider Hero Dynamique */
+    .hero-slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 1.5s ease-in-out;
+        
+        /* Forces l'image à couvrir tout l'espace sans déformation */
+        background-size: cover;      
+        /* Par défaut sur PC : centré */
+        background-position: center center; 
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        /* Empêche les saccades sur certains navigateurs mobiles */
+        backface-visibility: hidden;
+    }
+
+    /* --- AJUSTEMENT MOBILE CRUCIAL --- */
+    @media (max-width: 768px) {
+        .hero-slide {
+            /* On force l'image à s'aligner sur le haut pour ne pas couper les têtes 
+               et on utilise 'fixed' pour stabiliser le rendu si nécessaire */
+            background-position: 50% 0%; 
+            /* Optionnel : si tes images sont trop larges, on peut forcer l'affichage */
+            height: 100vh; 
+            height: -webkit-fill-available; /* Pour éviter le bug de la barre Safari/Chrome */
+        }
+        
+        /* On remonte un peu le texte pour dégager le bas de l'image */
+        .hero-content-mobile {
+            transform: translateY(-10%);
+        }
+    }
+
+    .hero-slide.active { 
+        opacity: 1; 
+        z-index: 1; 
+    }
+    
+    .hero-gradient-overlay { 
+        /* Dégradé plus intelligent : plus sombre en bas pour la lisibilité du texte */
+        background: linear-gradient(
+            to bottom, 
+            rgba(12, 59, 106, 0.7) 0%, 
+            rgba(12, 59, 106, 0.85) 50%, 
+            rgba(0, 0, 0, 0.9) 100%
+        ); 
+        position: absolute;
+        inset: 0;
+        z-index: 2; /* Doit être au-dessus des images (z-1) */
+    }
+
+    /* Animation d'apparition au scroll */
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Style Navbar au défilement */
+    nav.scrolled {
+        padding: 0.5rem 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+</style>
+</head>
+<body class="font-sans text-gray-900 bg-gray-50">
+
+    <nav id="main-nav" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <img src="amu.png" alt="Logo AMUCAM" class="h-16 w-auto transition-transform hover:scale-105">
+                    <span class="ml-2 font-bold text-lg md:text-xl text-blue-900">AMUCAM</span>
+                    <!-- <span class="ml-3 font-bold text-xl text-blue-900 hidden md:block">AMUCAM</span> -->
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8 font-medium">
+                    <a href="#" class="text-blue-900 hover:text-blue-600 transition">Accueil</a>
+                    <a href="#agence" class="text-gray-600 hover:text-blue-600 transition">L'Agence</a>
+                    <a href="#expertise" class="text-gray-600 hover:text-blue-600 transition">Expertise</a>
+                    <a href="#partenaires" class="text-gray-600 hover:text-blue-600 transition">Partenaires</a>
+                    <a href="#" class="bg-medical text-white px-6 py-2 rounded-full hover:bg-blue-700 transition shadow-lg hover:shadow-blue-200">Contact</a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-blue-900 focus:outline-none text-2xl">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-2 shadow-xl">
+            <a href="#" class="block px-3 py-2 text-blue-900 font-bold">Accueil</a>
+            <a href="#agence" class="block px-3 py-2 text-gray-600">L'Agence</a>
+            <a href="#expertise" class="block px-3 py-2 text-gray-600">Expertise</a>
+            <a href="#partenaires" class="block px-3 py-2 text-gray-600">Partenaires</a>
+            <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center">Contact</a>
+        </div>
+    </nav>
+
+    <section class="relative h-screen flex items-center text-white px-4 overflow-hidden">
+        <div class="hero-slide active" style="background-image: url('assets/img/img2.jpg');"></div>
+        <div class="hero-slide" style="background-image: url('assets/img/img3.jpg');"></div>
+        <div class="hero-slide" style="background-image: url('assets/img/image.png');"></div>
+        
+        <div class="hero-gradient-overlay"></div>
+
+        <div class="max-w-7xl mx-auto w-full relative z-10 px-4 sm:px-6">
+    <div class="md:w-2/3 lg:w-3/4">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 animate-pulse">
+            <span class="flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+            </span>
+            <span class="text-xs md:text-sm font-bold tracking-widest uppercase">Standard International</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.1] mb-6 tracking-tight">
+            L'Élite de l'Urgence <br class="hidden md:block"> 
+            Médicale au <span class="relative inline-block">
+                <span class="relative z-10 text-yellow-400">Cameroun</span>
+                <svg class="absolute -bottom-2 left-0 w-full h-3 text-yellow-500/30" viewBox="0 0 100 10" preserveAspectRatio="none">
+                    <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" stroke-width="4" fill="transparent"/>
+                </svg>
+            </span>.
+        </h1>
+
+        <p class="text-lg md:text-2xl mb-10 text-gray-100 opacity-95 leading-relaxed max-w-2xl font-light border-l-4 border-yellow-500 pl-6">
+            <span class="font-bold text-white">AMUCAM</span> : Association des Médecins Urgentistes du Cameroun . Standardiser, Former et Intervenir pour sauver des vies, avec le soutien des instances internationales.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+            <a href="#expertise" class="group relative bg-yellow-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg text-center overflow-hidden transition-all hover:bg-yellow-400 hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(234,179,8,0.3)]">
+                <span class="relative z-10 flex items-center justify-center gap-2">
+                    Découvrir nos Missions
+                    <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                </span>
+            </a>
+            
+            <a href="#" class="group border-2 border-white/50 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg text-center transition-all hover:bg-white hover:text-blue-900 hover:border-white flex items-center justify-center gap-2 active:scale-95">
+                <i class="far fa-file-pdf"></i>
+                Rapport d'Activités
+            </a>
+        </div>
+    </div>
+</div>
+</section>
+<section class="relative py-12 bg-white border-b overflow-hidden group">
+    <div class="max-w-7xl mx-auto px-4 relative">
+        
+        <div id="stats-slider" class="flex transition-transform duration-700 ease-in-out">
+            
+            <div class="min-w-full md:min-w-[25%] px-4">
+                <div class="bg-gray-50 p-8 rounded-2xl text-center border border-transparent hover:border-blue-100 transition shadow-sm">
+                    <p class="text-4xl font-bold text-blue-900 mb-2"><span class="counter" data-target="500">0</span>+</p>
+                    <p class="text-gray-500 uppercase tracking-widest text-xs font-semibold">Médecins Membres</p>
+                </div>
+            </div>
+
+            <div class="min-w-full md:min-w-[25%] px-4">
+                <div class="bg-gray-50 p-8 rounded-2xl text-center border border-transparent hover:border-blue-100 transition shadow-sm">
+                    <p class="text-4xl font-bold text-blue-900 mb-2"><span class="counter" data-target="10">0</span></p>
+                    <p class="text-gray-500 uppercase tracking-widest text-xs font-semibold">Régions Couvertes</p>
+                </div>
+            </div>
+
+            <div class="min-w-full md:min-w-[25%] px-4">
+                <div class="bg-gray-50 p-8 rounded-2xl text-center border border-transparent hover:border-blue-100 transition shadow-sm">
+                    <p class="text-4xl font-bold text-blue-900 mb-2">24/7</p>
+                    <p class="text-gray-500 uppercase tracking-widest text-xs font-semibold">Disponibilité</p>
+                </div>
+            </div>
+
+            <div class="min-w-full md:min-w-[25%] px-4">
+                <div class="bg-gray-50 p-8 rounded-2xl text-center border border-transparent hover:border-blue-100 transition shadow-sm">
+                    <p class="text-4xl font-bold text-blue-900 mb-2">BM/OMS</p>
+                    <p class="text-gray-500 uppercase tracking-widest text-xs font-semibold">Partenaires Stratégiques</p>
+                </div>
+            </div>
+
+        </div>
+
+        <button onclick="manualPrev()" class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center text-blue-900 hover:bg-blue-900 hover:text-white transition-all z-20">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button onclick="manualNext()" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center text-blue-900 hover:bg-blue-900 hover:text-white transition-all z-20">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</section>
+
+    <section id="expertise" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-bold text-blue-900 mb-4 uppercase tracking-tight">Nos Pôles d'Excellence</h2>
+                <div class="h-1.5 w-32 bg-yellow-500 mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-blue-600 hover:shadow-2xl transition-all hover:-translate-y-2 reveal">
+                    <div class="text-blue-600 text-4xl mb-6"><i class="fas fa-user-graduate"></i></div>
+                    <h3 class="text-xl font-bold mb-4">Formation Continue</h3>
+                    <p class="text-gray-600 leading-relaxed">Standardisation des protocoles d'urgence selon les normes internationales de soins critiques.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-yellow-500 hover:shadow-2xl transition-all hover:-translate-y-2 reveal" style="transition-delay: 100ms;">
+                    <div class="text-yellow-500 text-4xl mb-6"><i class="fas fa-hospital-symbol"></i></div>
+                    <h3 class="text-xl font-bold mb-4">Appui Institutionnel</h3>
+                    <p class="text-gray-600 leading-relaxed">Consultance stratégique pour la Banque Mondiale et le MINSANTE dans la gestion des crises sanitaires.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-red-600 hover:shadow-2xl transition-all hover:-translate-y-2 reveal" style="transition-delay: 200ms;">
+                    <div class="text-red-600 text-4xl mb-6"><i class="fas fa-ambulance"></i></div>
+                    <h3 class="text-xl font-bold mb-4">Coordination SAMU</h3>
+                    <p class="text-gray-600 leading-relaxed">Optimisation du maillage territorial pour une réponse rapide et efficace sur l'ensemble du triangle national.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-blue-900 text-white py-16 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="mb-8 md:mb-0 text-center md:text-left">
+                <h4 class="text-3xl font-black mb-2 uppercase tracking-tighter">AMUCAM</h4>
+                <p class="opacity-70 italic font-light">L'Excellence de la Médecine d'Urgence au Cameroun.</p>
+            </div>
+            <div class="flex space-x-8">
+                <a href="#" class="hover:text-yellow-400 text-3xl transition transform hover:scale-125"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="hover:text-yellow-400 text-3xl transition transform hover:scale-125"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="hover:text-yellow-400 text-3xl transition transform hover:scale-125"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+        <div class="text-center mt-12 pt-8 border-t border-blue-800 opacity-40 text-sm tracking-widest">
+            &copy; 2026 AMUCAM - AGENCE DES MÉDECINS URGENTISTES DU CAMEROUN. TOUS DROITS RÉSERVÉS.
+        </div>
+    </footer>
+
+    <script>
+        // 1. Slider Hero Automatique
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 5000); // Change toutes les 5 secondes
+
+        // 2. Menu Mobile Toggle
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // 3. Animation Reveal au Scroll
+        const observerOptions = { threshold: 0.15 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 4. Effet de Scroll sur la Navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+let currentStatIndex = 0;
+const statsSlider = document.getElementById('stats-slider');
+const totalStats = 4; // Nombre total de tes stats
+
+function updateSlider() {
+    // Sur mobile on défile de 100%, sur PC de 25%
+    const step = window.innerWidth < 768 ? 100 : 25;
+    const maxIndex = window.innerWidth < 768 ? totalStats - 1 : 0; // Sur PC on n'a pas besoin de slider si les 4 tiennent
+    
+    if (currentStatIndex > maxIndex) currentStatIndex = 0;
+    if (currentStatIndex < 0) currentStatIndex = maxIndex;
+    
+    statsSlider.style.transform = `translateX(-${currentStatIndex * step}%)`;
+}
+
+function nextStat() {
+    currentStatIndex++;
+    updateSlider();
+}
+
+function prevStat() {
+    currentStatIndex--;
+    updateSlider();
+}
+
+// Réajuster si on tourne l'écran
+window.addEventListener('resize', updateSlider);
+
+// Animation des compteurs
+const counters = document.querySelectorAll('.counter');
+const speed = 200;
+
+const startCounters = () => {
+    counters.forEach(counter => {
+        const updateCount = () => {
+            const target = +counter.getAttribute('data-target');
+            const count = +counter.innerText;
+            const inc = target / speed;
+
+            if (count < target) {
+                counter.innerText = Math.ceil(count + inc);
+                setTimeout(updateCount, 15);
+            } else {
+                counter.innerText = target;
+            }
+        };
+        updateCount();
+    });
+};
+
+// On lance les compteurs quand la section est visible
+const observerStats = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            startCounters();
+            observerStats.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter').forEach(c => observerStats.observe(c.parentElement));
+
+let autoSlideInterval;
+
+function updateSlider() {
+    const isMobile = window.innerWidth < 768;
+    const step = isMobile ? 100 : 25;
+    // Sur PC, on ne slide pas si les 4 sont visibles, sauf si tu veux un effet particulier
+    const maxIndex = isMobile ? totalStats - 1 : 0; 
+    
+    if (currentStatIndex > maxIndex) currentStatIndex = 0;
+    if (currentStatIndex < 0) currentStatIndex = maxIndex;
+    
+    statsSlider.style.transform = `translateX(-${currentStatIndex * step}%)`;
+}
+
+// Fonction pour le défilement automatique
+function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+        currentStatIndex++;
+        updateSlider();
+    }, 4000); // Change toutes les 4 secondes
+}
+
+// Fonctions manuelles (stoppent l'auto-défilement pour le confort)
+function manualNext() {
+    clearInterval(autoSlideInterval);
+    currentStatIndex++;
+    updateSlider();
+    startAutoSlide(); // Redémarre après action
+}
+
+function manualPrev() {
+    clearInterval(autoSlideInterval);
+    currentStatIndex--;
+    updateSlider();
+    startAutoSlide();
+}
+
+// Initialisation
+window.addEventListener('resize', updateSlider);
+startAutoSlide();
+    </script>
+</body>
+</html>
