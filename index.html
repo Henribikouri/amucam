@@ -201,38 +201,7 @@
         }
     }
 
-    /* 1. Transparence Intelligente au Scroll */
-    .nav-scrolled {
-        background-color: rgba(255, 255, 255, 0.9) !important;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        height: 75px !important;
-        box-shadow: 0 10px 30px rgba(0, 86, 179, 0.08);
-    }
     
-    #main-nav {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* 2. Menu Mobile : Animation de glissement et d'opacité */
-    #mobile-menu {
-        display: block !important; 
-        max-height: 0;
-        opacity: 0;
-        pointer-events: none;
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        transform: translateY(-20px);
-        background: white;
-    }
-
-    #mobile-menu.active {
-        max-height: 450px;
-        opacity: 1;
-        pointer-events: auto;
-        transform: translateY(0);
-        border-bottom: 4px solid #0056b3; /* Rappel du bleu en bas du menu */
-    }
-
     /* 3. Style de l'icône (Burger & Croix) */
     #mobile-menu-button {
         transition: all 0.3s ease;
@@ -654,41 +623,30 @@
     const nav = document.getElementById('main-nav');
     const mobileMenuBtn = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon = mobileMenuBtn.querySelector('i');
 
-    // --- TRANSFORMATION AU SCROLL ---
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 15) {
+        // On déclenche l'effet dès qu'on dépasse 10px de scroll
+        if (window.scrollY > 10) {
             nav.classList.add('nav-scrolled');
         } else {
             nav.classList.remove('nav-scrolled');
         }
     });
 
-    // --- ANIMATION DU MENU ET DE LA CROIX ---
     mobileMenuBtn.addEventListener('click', () => {
         const isOpen = mobileMenu.classList.toggle('active');
-        document.body.classList.toggle('menu-open-active');
+        const icon = mobileMenuBtn.querySelector('i');
 
         if (isOpen) {
-            // Passage à la croix (en restant bleu via le CSS)
-            menuIcon.classList.remove('fa-bars');
-            menuIcon.classList.add('fa-times');
+            icon.classList.replace('fa-bars', 'fa-times');
+            icon.style.transform = "rotate(180deg)";
         } else {
-            // Retour au burger
-            menuIcon.classList.remove('fa-times');
-            menuIcon.classList.add('fa-bars');
+            icon.classList.replace('fa-times', 'fa-bars');
+            icon.style.transform = "rotate(0deg)";
         }
     });
 
-    // Fermeture propre au clic sur un lien
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            document.body.classList.remove('menu-open-active');
-            menuIcon.classList.replace('fa-times', 'fa-bars');
-        });
-    });
+    
     </script>
 </body>
 </html>
