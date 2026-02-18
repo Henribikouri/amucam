@@ -73,7 +73,7 @@
         /* Dégradé plus intelligent : plus sombre en bas pour la lisibilité du texte */
         background: linear-gradient(
             to bottom, 
-            rgba(12, 59, 106, 0.7) 0%, 
+            rgba(12, 59, 106, 0.7) 40%, 
             rgba(12, 59, 106, 0.85) 50%, 
             rgba(0, 0, 0, 0.9) 100%
         ); 
@@ -81,24 +81,175 @@
         inset: 0;
         z-index: 2; /* Doit être au-dessus des images (z-1) */
     }
+    /* --- NOUVEAU TICKER ULTRA-PERCUTANT --- */
+    @keyframes infinite-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); } /* On déplace de la moitié car le contenu est doublé */
+    }
 
-    /* Animation d'apparition au scroll */
-    .reveal {
+    .ticker-container {
+        width: 100%;
+        overflow: hidden;
+        background: linear-gradient(to right, rgba(0, 32, 74, 0.9), rgba(0, 8, 20, 0.95)); /* Fond sombre et profond */
+        border-top: 1px solid rgba(234, 179, 8, 0.3); /* Liseré doré subtil en haut */
+        border-bottom: 1px solid rgba(234, 179, 8, 0.3); /* Liseré doré subtil en bas */
+        backdrop-filter: blur(8px); /* Effet de verre */
+    }
+
+    .ticker-track {
+        display: flex;
+        white-space: nowrap;
+        width: max-content; /* S'assure que le conteneur est assez large */
+        animation: infinite-scroll 40s linear infinite; /* Animation lente et fluide */
+    }
+
+    .ticker-track:hover {
+        animation-play-state: paused; /* S'arrête au survol pour lire */
+    }
+
+    .ticker-item {
+        display: inline-flex;
+        align-items: center;
+        padding: 1rem 0; /* Hauteur du bandeau */
+    }
+
+    .separator {
+        margin: 0 2rem; /* Espace entre les annonces */
+        color: rgba(234, 179, 8, 0.5); /* Couleur or pâle */
+    }
+
+    /* Ajustement du Hero pour laisser la place au ticker */
+    .hero-content-adjust {
+        padding-top: 8rem; /* Pousse le contenu vers le bas */
+    }
+    @media (max-width: 768px) {
+        .hero-content-adjust {
+            padding-top: 6rem; /* Un peu moins sur mobile */
+        }
+    }
+
+    /* Texture de grille technique (Le côté Ingénieur) */
+.hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Animation Battement de Coeur pour le badge */
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.1); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+}
+.animate-heartbeat {
+    animation: heartbeat 2s infinite;
+}
+/* SOLUTION ANTI-CASSE : Mode Paysage Mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+        section.relative.h-screen {
+            height: auto !important; /* On débloque la hauteur fixe */
+            min-height: 120vh;      /* On donne assez de place pour scroller */
+            padding-top: 120px;     /* On évite que le ticker cache le titre */
+            padding-bottom: 60px;
+        }
+
+        /* On réduit la taille du titre pour gagner de l'espace */
+        h1 {
+            font-size: 2.5rem !important; 
+            margin-bottom: 1rem !important;
+        }
+
+        /* On cache l'indicateur de scroll en mode paysage court car il gêne */
+        .scroll-indicator-container, 
+        .absolute.bottom-4 {
+            display: none !important;
+        }
+    }
+
+    /* Optimisation des images en mode paysage */
+    .hero-slide {
+        background-attachment: scroll; /* Évite les bugs de saccades au scroll mobile */
+    }
+
+    
+    /* Ajustement précis du Ticker pour éviter les collisions */
+    .ticker-container {
+        /* Sur mobile on reste à top-16 ou 20, mais sur PC on fixe bien le haut */
+        top: 4rem; /* top-16 */
+    }
+
+    @media (min-width: 768px) {
+        .ticker-container {
+            top: 6rem; /* top-24 sur PC */
+        }
+        
+        /* On s'assure que le contenu du Hero a assez d'espace en haut sur PC */
+        /* .max-w-7xl {
+            padding-top: 120px; 
+        } */
+    }
+
+    /* Sécurité pour les écrans PC très larges mais peu hauts */
+    @media (min-width: 1024px) and (max-height: 800px) {
+        h1 {
+            font-size: 4rem !important; /* On réduit un peu le 7xl si l'écran manque de hauteur */
+        }
+    }
+
+    /* 1. Transparence Intelligente au Scroll */
+    .nav-scrolled {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        height: 75px !important;
+        box-shadow: 0 10px 30px rgba(0, 86, 179, 0.08);
+    }
+    
+    #main-nav {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 2. Menu Mobile : Animation de glissement et d'opacité */
+    #mobile-menu {
+        display: block !important; 
+        max-height: 0;
         opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.8s ease-out;
-    }
-    .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
+        pointer-events: none;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateY(-20px);
+        background: white;
     }
 
-    /* Style Navbar au défilement */
-    nav.scrolled {
-        padding: 0.5rem 0;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
+    #mobile-menu.active {
+        max-height: 450px;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+        border-bottom: 4px solid #0056b3; /* Rappel du bleu en bas du menu */
     }
+
+    /* 3. Style de l'icône (Burger & Croix) */
+    #mobile-menu-button {
+        transition: all 0.3s ease;
+    }
+
+    /* On force la couleur bleue sur l'icône i, qu'elle soit burger ou croix */
+    #mobile-menu-button i {
+        color: #0056b3 !important; 
+        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* Rotation de la croix quand le menu est ouvert */
+    .menu-open-active #mobile-menu-button i {
+        transform: rotate(180deg);
+    }
+
+    
 </style>
 </head>
 <body class="font-sans text-gray-900 bg-gray-50">
@@ -108,15 +259,22 @@
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
                     <img src="amu.png" alt="Logo AMUCAM" class="h-16 w-auto transition-transform hover:scale-105">
-                    <span class="ml-2 font-bold text-lg md:text-xl text-blue-900">AMUCAM</span>
-                    <!-- <span class="ml-3 font-bold text-xl text-blue-900 hidden md:block">AMUCAM</span> -->
+                    <div class="flex flex-col justify-center">
+                    <h5 class="text-3xl md:text-3xl font-black text-[#0056b3] leading-none tracking-tighter">
+                        AMUCAM
+                    </h5>
+                    
+                    <p class="text-[10px] md:text-[12px] font-black text-red-600 uppercase tracking-[0.15em] mt-1 ">
+                        Luttons contre les morts évitables
+                    </p>
+                </div>
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-8 font-medium">
                     <a href="#" class="text-blue-900 hover:text-blue-600 transition">Accueil</a>
-                    <a href="#agence" class="text-gray-600 hover:text-blue-600 transition">L'Agence</a>
-                    <a href="#expertise" class="text-gray-600 hover:text-blue-600 transition">Expertise</a>
-                    <a href="#partenaires" class="text-gray-600 hover:text-blue-600 transition">Partenaires</a>
+                    <a href="#agence" class="text-gray-600 hover:text-blue-600 transition">A propos</a>
+                    <a href="#expertise" class="text-gray-600 hover:text-blue-600 transition">Nos Formations </a>
+                    <a href="#partenaires" class="text-gray-600 hover:text-blue-600 transition">Nos realisations</a>
                     <a href="#" class="bg-medical text-white px-6 py-2 rounded-full hover:bg-blue-700 transition shadow-lg hover:shadow-blue-200">Contact</a>
                 </div>
 
@@ -143,90 +301,197 @@
         <div class="hero-slide" style="background-image: url('assets/img/image.png');"></div>
         
         <div class="hero-gradient-overlay"></div>
-
-        <div class="max-w-7xl mx-auto w-full relative z-10 px-4 sm:px-6">
-    <div class="md:w-2/3 lg:w-3/4">
-        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 animate-pulse">
-            <span class="flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
-            </span>
-            <span class="text-xs md:text-sm font-bold tracking-widest uppercase">Standard International</span>
-        </div>
-
-        <h1 class="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.1] mb-6 tracking-tight">
-            L'Élite de l'Urgence <br class="hidden md:block"> 
-            Médicale au <span class="relative inline-block">
-                <span class="relative z-10 text-yellow-400">Cameroun</span>
-                <svg class="absolute -bottom-2 left-0 w-full h-3 text-yellow-500/30" viewBox="0 0 100 10" preserveAspectRatio="none">
-                    <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" stroke-width="4" fill="transparent"/>
-                </svg>
-            </span>.
-        </h1>
-
-        <p class="text-lg md:text-2xl mb-10 text-gray-100 opacity-95 leading-relaxed max-w-2xl font-light border-l-4 border-yellow-500 pl-6">
-            <span class="font-bold text-white">AMUCAM</span> : Association des Médecins Urgentistes du Cameroun . Standardiser, Former et Intervenir pour sauver des vies, avec le soutien des instances internationales.
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <a href="#expertise" class="group relative bg-yellow-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg text-center overflow-hidden transition-all hover:bg-yellow-400 hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(234,179,8,0.3)]">
-                <span class="relative z-10 flex items-center justify-center gap-2">
-                    Découvrir nos Missions
-                    <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+        <div class="absolute top-20 md:top-24 left-0 z-20 ticker-container">
+        <div class="ticker-track">
+            <div class="ticker-item">
+                <span class="text-yellow-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                    <i class="fas fa-bolt animate-pulse"></i> Alerte Urgence 24/7
                 </span>
-            </a>
-            
-            <a href="#" class="group border-2 border-white/50 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg text-center transition-all hover:bg-white hover:text-blue-900 hover:border-white flex items-center justify-center gap-2 active:scale-95">
-                <i class="far fa-file-pdf"></i>
-                Rapport d'Activités
-            </a>
+                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
+                    Dispositif National de Réponse Rapide Activé
+                </span>
+            </div>
+            <i class="fas fa-circle text-[6px] separator"></i>
+            <div class="ticker-item">
+                 <span class="text-blue-200 font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                    <i class="fas fa-graduation-cap"></i> Formation SAMU
+                </span>
+                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
+                    Nouvelle Session de Standardisation des Protocoles Critiques
+                </span>
+            </div>
+             <i class="fas fa-circle text-[6px] separator"></i>
+            <div class="ticker-item">
+                 <span class="text-green-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                    <i class="fas fa-handshake"></i> Partenariat BM/OMS
+                </span>
+                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
+                    Renforcement des Capacités Techniques en Région
+                </span>
+            </div>
+            <i class="fas fa-circle text-[6px] separator"></i>
+
+            <div class="ticker-item">
+                <span class="text-yellow-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                    <i class="fas fa-bolt animate-pulse"></i> Alerte Urgence 24/7
+                </span>
+                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
+                    Dispositif National de Réponse Rapide Activé
+                </span>
+            </div>
+            <i class="fas fa-circle text-[6px] separator"></i>
+            <div class="ticker-item">
+                 <span class="text-blue-200 font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                    <i class="fas fa-graduation-cap"></i> Formation SAMU
+                </span>
+                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
+                    Nouvelle Session de Standardisation des Protocoles Critiques
+                </span>
+            </div>
+             <i class="fas fa-circle text-[6px] separator"></i>
+            <div class="ticker-item">
+                 <span class="text-green-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                    <i class="fas fa-handshake"></i> Partenariat BM/OMS
+                </span>
+                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
+                    Renforcement des Capacités Techniques en Région
+                </span>
+            </div>
+            <i class="fas fa-circle text-[6px] separator"></i>
         </div>
     </div>
-</div>
-</section>
-<section class="relative py-12 bg-white border-b overflow-hidden group">
-    <div class="max-w-7xl mx-auto px-4 relative">
-        
-        <div id="stats-slider" class="flex transition-transform duration-700 ease-in-out">
+        <div class="max-w-7xl mx-auto w-full relative z-10 px-4 sm:px-6 md:pt-32">
+            <div class="md:w-2/3 lg:w-3/4">
+                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 animate-pulse">
+                    <span class="flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                    </span>
+                    <span class="text-xs md:text-sm font-bold tracking-widest uppercase">Standard International</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.1] mb-6 tracking-tight">L'Élite de l'Urgence <br class="hidden md:block"> Médicale au <span class="relative inline-block">
+                    <span class="relative z-10 text-yellow-400">Cameroun
+                        <svg class="absolute -bottom-2 left-0 w-full h-3 text-yellow-500/30" viewBox="0 0 100 10" preserveAspectRatio="none">
+                            <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" stroke-width="4" fill="transparent"/>
+                        </svg>
+                    </span>.
+                </h1>
+                <p class="text-lg md:text-2xl mb-10 text-gray-100 opacity-95 leading-relaxed max-w-2xl font-light border-l-4 border-yellow-500 pl-6">
+                    <span class="font-bold text-white">AMUCAM</span> : Association des Médecins Urgentistes du Cameroun . Standardiser, Former et Intervenir pour sauver des vies, avec le soutien des instances internationales.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                <a href="#expertise" class="group relative bg-yellow-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg text-center overflow-hidden transition-all hover:bg-yellow-400 hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(234,179,8,0.3)]">
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        Découvrir nos Missions
+                        <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </a>
             
-            <div class="min-w-full md:min-w-[25%] px-4">
-                <div class="bg-gray-50 p-8 rounded-2xl text-center border border-transparent hover:border-blue-100 transition shadow-sm">
-                    <p class="text-4xl font-bold text-blue-900 mb-2"><span class="counter" data-target="500">0</span>+</p>
-                    <p class="text-gray-500 uppercase tracking-widest text-xs font-semibold">Médecins Membres</p>
-                </div>
+                <a href="#" class="group border-2 border-white/50 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg text-center transition-all hover:bg-white hover:text-blue-900 hover:border-white flex items-center justify-center gap-2 active:scale-95">
+                    <i class="far fa-file-pdf"></i>
+                    Rapport d'Activités
+                </a>
             </div>
-
-            <div class="min-w-full md:min-w-[25%] px-4">
-                <div class="bg-gray-50 p-8 rounded-2xl text-center border border-transparent hover:border-blue-100 transition shadow-sm">
-                    <p class="text-4xl font-bold text-blue-900 mb-2"><span class="counter" data-target="10">0</span></p>
-                    <p class="text-gray-500 uppercase tracking-widest text-xs font-semibold">Régions Couvertes</p>
-                </div>
-            </div>
-
-            <div class="min-w-full md:min-w-[25%] px-4">
-                <div class="bg-gray-50 p-8 rounded-2xl text-center border border-transparent hover:border-blue-100 transition shadow-sm">
-                    <p class="text-4xl font-bold text-blue-900 mb-2">24/7</p>
-                    <p class="text-gray-500 uppercase tracking-widest text-xs font-semibold">Disponibilité</p>
-                </div>
-            </div>
-
-            <div class="min-w-full md:min-w-[25%] px-4">
-                <div class="bg-gray-50 p-8 rounded-2xl text-center border border-transparent hover:border-blue-100 transition shadow-sm">
-                    <p class="text-4xl font-bold text-blue-900 mb-2">BM/OMS</p>
-                    <p class="text-gray-500 uppercase tracking-widest text-xs font-semibold">Partenaires Stratégiques</p>
-                </div>
-            </div>
-
         </div>
+    </section>
 
-        <button onclick="manualPrev()" class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center text-blue-900 hover:bg-blue-900 hover:text-white transition-all z-20">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button onclick="manualNext()" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center text-blue-900 hover:bg-blue-900 hover:text-white transition-all z-20">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-    </div>
-</section>
+    <section class="relative py-20 bg-gradient-to-b from-white via-blue-50/30 to-white border-b overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-yellow-300 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <!-- <div class="text-center mb-16">
+                <h3 class="text-2xl md:text-3xl font-bold text-blue-900 mb-2 uppercase tracking-tight">Impact & Portée</h3>
+                <div class="h-1 w-24 bg-yellow-500 mx-auto rounded-full"></div>
+            </div> -->
+            
+            <div id="stats-slider" class="flex transition-transform duration-700 ease-in-out">
+                <!-- Carte 1: Médecins -->
+                <div class="min-w-full md:min-w-[25%] px-3 md:px-4">
+                    <div class="group relative h-full overflow-hidden rounded-3xl p-8 text-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-800 opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="text-6xl mb-4 text-white/80 group-hover:text-white transition-colors">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <p class="text-5xl md:text-6xl font-black text-white mb-3 transform group-hover:scale-110 transition-transform duration-300">
+                                <span class="counter" data-target="500">0</span><span class="text-4xl">+</span>
+                            </p>
+                            <p class="text-blue-100 uppercase tracking-widest text-xs md:text-sm font-bold group-hover:text-white transition-colors">Médecins Membres</p>
+                            <div class="mt-6 h-1 w-12 bg-yellow-400 mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carte 2: Régions -->
+                <div class="min-w-full md:min-w-[25%] px-3 md:px-4">
+                    <div class="group relative h-full overflow-hidden rounded-3xl p-8 text-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-500 via-yellow-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-amber-500 to-yellow-600 opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="text-6xl mb-4 text-white/80 group-hover:text-white transition-colors">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <p class="text-5xl md:text-6xl font-black text-white mb-3 transform group-hover:scale-110 transition-transform duration-300">
+                                <span class="counter" data-target="10">0</span>
+                            </p>
+                            <p class="text-amber-100 uppercase tracking-widest text-xs md:text-sm font-bold group-hover:text-white transition-colors">Régions Couvertes</p>
+                            <div class="mt-6 h-1 w-12 bg-blue-400 mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carte 3: 24/7 -->
+                <div class="min-w-full md:min-w-[25%] px-3 md:px-4">
+                    <div class="group relative h-full overflow-hidden rounded-3xl p-8 text-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-600 via-red-500 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-600 to-red-700 opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="text-6xl mb-4 text-white/80 group-hover:text-white transition-colors animate-pulse">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <p class="text-5xl md:text-6xl font-black text-white mb-3 transform group-hover:scale-110 transition-transform duration-300">
+                                24/7
+                            </p>
+                            <p class="text-red-100 uppercase tracking-widest text-xs md:text-sm font-bold group-hover:text-white transition-colors">Disponibilité</p>
+                            <div class="mt-6 h-1 w-12 bg-yellow-300 mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carte 4: Partenaires -->
+                <div class="min-w-full md:min-w-[25%] px-3 md:px-4">
+                    <div class="group relative h-full overflow-hidden rounded-3xl p-8 text-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-700 to-indigo-700 opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="text-6xl mb-4 text-white/80 group-hover:text-white transition-colors">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <p class="text-5xl md:text-6xl font-black text-white mb-3 transform group-hover:scale-110 transition-transform duration-300">
+                                BM/OMS
+                            </p>
+                            <p class="text-purple-100 uppercase tracking-widest text-xs md:text-sm font-bold group-hover:text-white transition-colors">Partenaires Stratégiques</p>
+                            <div class="mt-6 h-1 w-12 bg-yellow-300 mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="manualPrev()" class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center text-blue-900 hover:bg-blue-900 hover:text-white transition-all duration-300 hover:scale-110 z-20 group">
+                <i class="fas fa-chevron-left group-hover:translate-x-0.5 transition-transform"></i>
+            </button>
+            <button onclick="manualNext()" class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center text-blue-900 hover:bg-blue-900 hover:text-white transition-all duration-300 hover:scale-110 z-20 group">
+                <i class="fas fa-chevron-right group-hover:-translate-x-0.5 transition-transform"></i>
+            </button>
+        </div>
+    </section>
 
     <section id="expertise" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4">
@@ -234,7 +499,7 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-blue-900 mb-4 uppercase tracking-tight">Nos Pôles d'Excellence</h2>
                 <div class="h-1.5 w-32 bg-yellow-500 mx-auto rounded-full"></div>
             </div>
-            
+
             <div class="grid md:grid-cols-3 gap-10">
                 <div class="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-blue-600 hover:shadow-2xl transition-all hover:-translate-y-2 reveal">
                     <div class="text-blue-600 text-4xl mb-6"><i class="fas fa-user-graduate"></i></div>
@@ -311,108 +576,119 @@
                 nav.classList.remove('scrolled');
             }
         });
-let currentStatIndex = 0;
-const statsSlider = document.getElementById('stats-slider');
-const totalStats = 4; // Nombre total de tes stats
 
-function updateSlider() {
-    // Sur mobile on défile de 100%, sur PC de 25%
-    const step = window.innerWidth < 768 ? 100 : 25;
-    const maxIndex = window.innerWidth < 768 ? totalStats - 1 : 0; // Sur PC on n'a pas besoin de slider si les 4 tiennent
-    
-    if (currentStatIndex > maxIndex) currentStatIndex = 0;
-    if (currentStatIndex < 0) currentStatIndex = maxIndex;
-    
-    statsSlider.style.transform = `translateX(-${currentStatIndex * step}%)`;
-}
+        // 5. Slider Statistiques
+        let currentStatIndex = 0;
+        const statsSlider = document.getElementById('stats-slider');
+        const totalStats = 4; // Nombre total de tes stats
+        let autoSlideInterval;
 
-function nextStat() {
-    currentStatIndex++;
-    updateSlider();
-}
+        function updateSlider() {
+            const isMobile = window.innerWidth < 768;
+            const step = isMobile ? 100 : 25;
+            const maxIndex = isMobile ? totalStats - 1 : 0;
+            
+            if (currentStatIndex > maxIndex) currentStatIndex = 0;
+            if (currentStatIndex < 0) currentStatIndex = maxIndex;
+            
+            statsSlider.style.transform = `translateX(-${currentStatIndex * step}%)`;
+        }
 
-function prevStat() {
-    currentStatIndex--;
-    updateSlider();
-}
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                currentStatIndex++;
+                updateSlider();
+            }, 4000); // Change toutes les 4 secondes
+        }
 
-// Réajuster si on tourne l'écran
-window.addEventListener('resize', updateSlider);
+        function manualNext() {
+            clearInterval(autoSlideInterval);
+            currentStatIndex++;
+            updateSlider();
+            startAutoSlide();
+        }
 
-// Animation des compteurs
-const counters = document.querySelectorAll('.counter');
-const speed = 200;
+        function manualPrev() {
+            clearInterval(autoSlideInterval);
+            currentStatIndex--;
+            updateSlider();
+            startAutoSlide();
+        }
 
-const startCounters = () => {
-    counters.forEach(counter => {
-        const updateCount = () => {
-            const target = +counter.getAttribute('data-target');
-            const count = +counter.innerText;
-            const inc = target / speed;
+        window.addEventListener('resize', updateSlider);
+        startAutoSlide();
 
-            if (count < target) {
-                counter.innerText = Math.ceil(count + inc);
-                setTimeout(updateCount, 15);
-            } else {
-                counter.innerText = target;
-            }
+        // 6. Animation des compteurs
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        const startCounters = () => {
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 15);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
         };
-        updateCount();
-    });
-};
 
-// On lance les compteurs quand la section est visible
-const observerStats = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            startCounters();
-            observerStats.unobserve(entry.target);
+        const observerStats = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startCounters();
+                    observerStats.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.counter').forEach(c => observerStats.observe(c.parentElement));
+
+    const nav = document.getElementById('main-nav');
+    const mobileMenuBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = mobileMenuBtn.querySelector('i');
+
+    // --- TRANSFORMATION AU SCROLL ---
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 15) {
+            nav.classList.add('nav-scrolled');
+        } else {
+            nav.classList.remove('nav-scrolled');
         }
     });
-}, { threshold: 0.5 });
 
-document.querySelectorAll('.counter').forEach(c => observerStats.observe(c.parentElement));
+    // --- ANIMATION DU MENU ET DE LA CROIX ---
+    mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.toggle('active');
+        document.body.classList.toggle('menu-open-active');
 
-let autoSlideInterval;
+        if (isOpen) {
+            // Passage à la croix (en restant bleu via le CSS)
+            menuIcon.classList.remove('fa-bars');
+            menuIcon.classList.add('fa-times');
+        } else {
+            // Retour au burger
+            menuIcon.classList.remove('fa-times');
+            menuIcon.classList.add('fa-bars');
+        }
+    });
 
-function updateSlider() {
-    const isMobile = window.innerWidth < 768;
-    const step = isMobile ? 100 : 25;
-    // Sur PC, on ne slide pas si les 4 sont visibles, sauf si tu veux un effet particulier
-    const maxIndex = isMobile ? totalStats - 1 : 0; 
-    
-    if (currentStatIndex > maxIndex) currentStatIndex = 0;
-    if (currentStatIndex < 0) currentStatIndex = maxIndex;
-    
-    statsSlider.style.transform = `translateX(-${currentStatIndex * step}%)`;
-}
-
-// Fonction pour le défilement automatique
-function startAutoSlide() {
-    autoSlideInterval = setInterval(() => {
-        currentStatIndex++;
-        updateSlider();
-    }, 4000); // Change toutes les 4 secondes
-}
-
-// Fonctions manuelles (stoppent l'auto-défilement pour le confort)
-function manualNext() {
-    clearInterval(autoSlideInterval);
-    currentStatIndex++;
-    updateSlider();
-    startAutoSlide(); // Redémarre après action
-}
-
-function manualPrev() {
-    clearInterval(autoSlideInterval);
-    currentStatIndex--;
-    updateSlider();
-    startAutoSlide();
-}
-
-// Initialisation
-window.addEventListener('resize', updateSlider);
-startAutoSlide();
+    // Fermeture propre au clic sur un lien
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.classList.remove('menu-open-active');
+            menuIcon.classList.replace('fa-times', 'fa-bars');
+        });
+    });
     </script>
 </body>
 </html>
