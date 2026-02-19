@@ -29,104 +29,7 @@
     .medical-blue { color: #0056b3; }
     .bg-medical { background-color: #0056b3; }
     
-    /* Slider Hero Dynamique */
-    .hero-slide {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        transition: opacity 1.5s ease-in-out;
-        
-        /* Forces l'image à couvrir tout l'espace sans déformation */
-        background-size: cover;      
-        /* Par défaut sur PC : centré */
-        background-position: center center; 
-        background-repeat: no-repeat;
-        width: 100%;
-        height: 100%;
-        /* Empêche les saccades sur certains navigateurs mobiles */
-        backface-visibility: hidden;
-    }
 
-    /* --- AJUSTEMENT MOBILE CRUCIAL --- */
-    @media (max-width: 768px) {
-        .hero-slide {
-            /* On force l'image à s'aligner sur le haut pour ne pas couper les têtes 
-               et on utilise 'fixed' pour stabiliser le rendu si nécessaire */
-            background-position: 50% 0%; 
-            /* Optionnel : si tes images sont trop larges, on peut forcer l'affichage */
-            height: 100vh; 
-            height: -webkit-fill-available; /* Pour éviter le bug de la barre Safari/Chrome */
-        }
-        
-        /* On remonte un peu le texte pour dégager le bas de l'image */
-        .hero-content-mobile {
-            transform: translateY(-10%);
-        }
-    }
-
-    .hero-slide.active { 
-        opacity: 1; 
-        z-index: 1; 
-    }
-    
-    .hero-gradient-overlay { 
-        /* Dégradé plus intelligent : plus sombre en bas pour la lisibilité du texte */
-        background: linear-gradient(
-            to bottom, 
-            rgba(12, 59, 106, 0.7) 40%, 
-            rgba(12, 59, 106, 0.85) 50%, 
-            rgba(0, 0, 0, 0.9) 100%
-        ); 
-        position: absolute;
-        inset: 0;
-        z-index: 2; /* Doit être au-dessus des images (z-1) */
-    }
-    /* --- NOUVEAU TICKER ULTRA-PERCUTANT --- */
-    @keyframes infinite-scroll {
-        from { transform: translateX(0); }
-        to { transform: translateX(-50%); } /* On déplace de la moitié car le contenu est doublé */
-    }
-
-    .ticker-container {
-        width: 100%;
-        overflow: hidden;
-        background: linear-gradient(to right, rgba(0, 32, 74, 0.9), rgba(0, 8, 20, 0.95)); /* Fond sombre et profond */
-        border-top: 1px solid rgba(234, 179, 8, 0.3); /* Liseré doré subtil en haut */
-        border-bottom: 1px solid rgba(234, 179, 8, 0.3); /* Liseré doré subtil en bas */
-        backdrop-filter: blur(8px); /* Effet de verre */
-    }
-
-    .ticker-track {
-        display: flex;
-        white-space: nowrap;
-        width: max-content; /* S'assure que le conteneur est assez large */
-        animation: infinite-scroll 40s linear infinite; /* Animation lente et fluide */
-    }
-
-    .ticker-track:hover {
-        animation-play-state: paused; /* S'arrête au survol pour lire */
-    }
-
-    .ticker-item {
-        display: inline-flex;
-        align-items: center;
-        padding: 1rem 0; /* Hauteur du bandeau */
-    }
-
-    .separator {
-        margin: 0 2rem; /* Espace entre les annonces */
-        color: rgba(234, 179, 8, 0.5); /* Couleur or pâle */
-    }
-
-    /* Ajustement du Hero pour laisser la place au ticker */
-    .hero-content-adjust {
-        padding-top: 8rem; /* Pousse le contenu vers le bas */
-    }
-    @media (max-width: 768px) {
-        .hero-content-adjust {
-            padding-top: 6rem; /* Un peu moins sur mobile */
-        }
-    }
 
     /* Texture de grille technique (Le côté Ingénieur) */
 .hero-grid-overlay {
@@ -138,17 +41,6 @@
     pointer-events: none;
 }
 
-/* Animation Battement de Coeur pour le badge */
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    14% { transform: scale(1.1); }
-    28% { transform: scale(1); }
-    42% { transform: scale(1.1); }
-    70% { transform: scale(1); }
-}
-.animate-heartbeat {
-    animation: heartbeat 2s infinite;
-}
 /* SOLUTION ANTI-CASSE : Mode Paysage Mobile */
     @media (max-height: 500px) and (orientation: landscape) {
         section.relative.h-screen {
@@ -177,11 +69,6 @@
     }
 
     
-    /* Ajustement précis du Ticker pour éviter les collisions */
-    .ticker-container {
-        /* Sur mobile on reste à top-16 ou 20, mais sur PC on fixe bien le haut */
-        top: 4rem; /* top-16 */
-    }
 
     @media (min-width: 768px) {
         .ticker-container {
@@ -218,7 +105,155 @@
         transform: rotate(180deg);
     }
 
-    
+    .hero-slider-container {
+        position: relative;
+        height: 100vh;
+        height: 100svh;
+        overflow: hidden;
+    }
+
+    .slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 1s ease-in-out, visibility 1s;
+        z-index: 1;
+    }
+
+    .slide.active {
+        opacity: 1;
+        visibility: visible;
+        z-index: 2;
+    }
+
+    /* Effet Ken Burns (Zoom lent sur l'image) */
+    .slide-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.1);
+        transition: transform 6s linear;
+    }
+
+    .slide.active .slide-bg {
+        transform: scale(1);
+    }
+
+    /* Animation du texte (Slide up) */
+    .slide-content h1, .slide-content p, .slide-content .btn-container {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+
+    .slide.active .slide-content h1 { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+    .slide.active .slide-content p { opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
+    .slide.active .slide-content .btn-container { opacity: 1; transform: translateY(0); transition-delay: 0.7s; }
+
+    /* Les Points de navigation (Dots) */
+    .slider-dots {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 50;
+        display: flex;
+        gap: 12px;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .dot.active {
+        background: #eab308; /* Jaune AMUCAM */
+        transform: scale(1.3);
+        border-color: white;
+    }
+
+
+
+    /* Ajustement de la hauteur globale */
+    .hero-slider-container {
+        position: relative;
+        height: 85vh;
+        min-height: 600px; /* Sécurité pour ne pas écraser le texte */
+        overflow: hidden;
+        background-color: #000; /* Fond noir pour éviter les flashs blancs */
+    }
+
+    @media (max-width: 768px) {
+        .hero-slider-container {
+            height: 50vh; /* On réduit la hauteur sur mobile pour voir la suite du site */
+            min-height: 400px;
+        }
+
+        /* On réduit drastiquement la taille des textes sur mobile */
+        .slide-content h1 {
+            font-size: 2.2rem !important; /* Titre plus compact */
+            line-height: 1.2 !important;
+        }
+
+        .slide-content p {
+            font-size: 1rem !important; /* Paragraphe plus discret */
+            margin-bottom: 1.5rem !important;
+            padding-left: 1rem !important;
+        }
+
+        /* On ajuste l'image pour qu'elle soit bien centrée et visible */
+        .slide-bg {
+            background-position: 50% 30%; /* Remonte un peu l'image pour voir les visages/sujets */
+        }
+        
+        /* Les points de navigation remontent pour être bien visibles */
+        .slider-dots {
+            bottom: 20px !important;
+            position: absolute;
+            bottom: 30px; /* Légèrement plus bas pour ne pas gêner le texte */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            display: flex;
+            gap: 12px;
+        }
+        /* On remonte légèrement le contenu pour l'équilibre visuel */
+        .slide-content {
+            padding-top: 40px; 
+        }
+    }
+
+    /* Overlay plus intelligent : sombre en bas pour les points, clair au milieu pour l'image */
+    .slide-bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to bottom,
+            rgba(0,0,0,0.4) 0%,
+            rgba(0,0,0,0.2) 40%,
+            rgba(0,0,0,0.7) 100%
+        );
+    }
+
+    /* --- OPTIMISATION DE L'IMAGE --- */
+    .slide-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        /* "center 20%" permet de garder le haut des images (visages, logos) 
+           bien visible même quand on réduit la hauteur */
+        background-position: center 20%; 
+        transform: scale(1.1);
+        transition: transform 6s linear;
+    }
 </style>
 </head>
 <body class="font-sans text-gray-900 bg-gray-50">
@@ -241,7 +276,7 @@
                 
                 <div class="hidden md:flex items-center space-x-8 font-medium">
                     <a href="#" class="text-blue-900 hover:text-blue-600 transition">Accueil</a>
-                    <a href="#agence" class="text-gray-600 hover:text-blue-600 transition">A propos</a>
+                    <a href="#agence" class="text-gray-600 hover:text-blue-600 transition">À propos</a>
                     <a href="#expertise" class="text-gray-600 hover:text-blue-600 transition">Nos Formations </a>
                     <a href="#partenaires" class="text-gray-600 hover:text-blue-600 transition">Nos realisations</a>
                     <a href="#" class="bg-medical text-white px-6 py-2 rounded-full hover:bg-blue-700 transition shadow-lg hover:shadow-blue-200">Contact</a>
@@ -257,110 +292,69 @@
 
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-2 shadow-xl">
             <a href="#" class="block px-3 py-2 text-blue-900 font-bold">Accueil</a>
-            <a href="#agence" class="block px-3 py-2 text-gray-600">L'Agence</a>
-            <a href="#expertise" class="block px-3 py-2 text-gray-600">Expertise</a>
-            <a href="#partenaires" class="block px-3 py-2 text-gray-600">Partenaires</a>
+            <a href="#agence" class="block px-3 py-2 text-gray-600">À propos</a>
+            <a href="#expertise" class="block px-3 py-2 text-gray-600">Nos Formations</a>
+            <a href="#partenaires" class="block px-3 py-2 text-gray-600">Nos realisations</a>
             <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center">Contact</a>
         </div>
     </nav>
 
-    <section class="relative h-screen flex items-center text-white px-4 overflow-hidden">
-        <div class="hero-slide active" style="background-image: url('assets/img/img2.jpg');"></div>
-        <div class="hero-slide" style="background-image: url('assets/img/img3.jpg');"></div>
-        <div class="hero-slide" style="background-image: url('assets/img/image.png');"></div>
-        
-        <div class="hero-gradient-overlay"></div>
-        <div class="absolute top-20 md:top-24 left-0 z-20 ticker-container">
-        <div class="ticker-track">
-            <div class="ticker-item">
-                <span class="text-yellow-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
-                    <i class="fas fa-bolt animate-pulse"></i> Alerte Urgence 24/7
-                </span>
-                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
-                    Dispositif National de Réponse Rapide Activé
-                </span>
-            </div>
-            <i class="fas fa-circle text-[6px] separator"></i>
-            <div class="ticker-item">
-                 <span class="text-blue-200 font-black uppercase tracking-widest text-sm flex items-center gap-2">
-                    <i class="fas fa-graduation-cap"></i> Formation SAMU
-                </span>
-                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
-                    Nouvelle Session de Standardisation des Protocoles Critiques
-                </span>
-            </div>
-             <i class="fas fa-circle text-[6px] separator"></i>
-            <div class="ticker-item">
-                 <span class="text-green-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
-                    <i class="fas fa-handshake"></i> Partenariat BM/OMS
-                </span>
-                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
-                    Renforcement des Capacités Techniques en Région
-                </span>
-            </div>
-            <i class="fas fa-circle text-[6px] separator"></i>
-
-            <div class="ticker-item">
-                <span class="text-yellow-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
-                    <i class="fas fa-bolt animate-pulse"></i> Alerte Urgence 24/7
-                </span>
-                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
-                    Dispositif National de Réponse Rapide Activé
-                </span>
-            </div>
-            <i class="fas fa-circle text-[6px] separator"></i>
-            <div class="ticker-item">
-                 <span class="text-blue-200 font-black uppercase tracking-widest text-sm flex items-center gap-2">
-                    <i class="fas fa-graduation-cap"></i> Formation SAMU
-                </span>
-                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
-                    Nouvelle Session de Standardisation des Protocoles Critiques
-                </span>
-            </div>
-             <i class="fas fa-circle text-[6px] separator"></i>
-            <div class="ticker-item">
-                 <span class="text-green-400 font-black uppercase tracking-widest text-sm flex items-center gap-2">
-                    <i class="fas fa-handshake"></i> Partenariat BM/OMS
-                </span>
-                <span class="text-white font-bold uppercase tracking-wider text-sm ml-4">
-                    Renforcement des Capacités Techniques en Région
-                </span>
-            </div>
-            <i class="fas fa-circle text-[6px] separator"></i>
-        </div>
-    </div>
-        <div class="max-w-7xl mx-auto w-full relative z-10 px-4 sm:px-6 md:pt-32">
-            <div class="md:w-2/3 lg:w-3/4">
-                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 animate-pulse">
-                    <span class="flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
-                    </span>
-                    <span class="text-xs md:text-sm font-bold tracking-widest uppercase">Standard International</span>
+    <section class="hero-slider-container text-white">
+    
+        <div class="slide active">
+            <div class="slide-bg" style="background-image: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.2)), url('assets/img/img2.jpg');"></div>
+            <div class="max-w-7xl mx-auto h-full flex items-center px-4 relative z-10 slide-content">
+                <div class="md:w-3/4">
+                    <h1 class="text-4xl md:text-7xl font-black mb-6 leading-tight">L'Élite de l'Urgence <br> au <span class="text-yellow-400">Cameroun</span></h1>
+                    <p class="text-lg md:text-2xl mb-8 max-w-2xl text-gray-200 border-l-4 border-yellow-500 pl-6">
+                        AMUCAM standardise les soins critiques pour sauver des vies là où chaque seconde compte.
+                    </p>
+                    <div class="btn-container">
+                        <a href="#expertise" class="inline-flex items-center gap-3 bg-yellow-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-400 transition-all">
+                            Découvrir nos missions <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
-                <h1 class="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.1] mb-6 tracking-tight">L'Élite de l'Urgence <br class="hidden md:block"> Médicale au <span class="relative inline-block">
-                    <span class="relative z-10 text-yellow-400">Cameroun
-                        <svg class="absolute -bottom-2 left-0 w-full h-3 text-yellow-500/30" viewBox="0 0 100 10" preserveAspectRatio="none">
-                            <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" stroke-width="4" fill="transparent"/>
-                        </svg>
-                    </span>.
-                </h1>
-                <p class="text-lg md:text-2xl mb-10 text-gray-100 opacity-95 leading-relaxed max-w-2xl font-light border-l-4 border-yellow-500 pl-6">
-                    <span class="font-bold text-white">AMUCAM</span> : Association des Médecins Urgentistes du Cameroun . Standardiser, Former et Intervenir pour sauver des vies, avec le soutien des instances internationales.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
-                <a href="#expertise" class="group relative bg-yellow-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg text-center overflow-hidden transition-all hover:bg-yellow-400 hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(234,179,8,0.3)]">
-                    <span class="relative z-10 flex items-center justify-center gap-2">
-                        Découvrir nos Missions
-                        <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
-                    </span>
-                </a>
-            
-                <a href="#" class="group border-2 border-white/50 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold text-lg text-center transition-all hover:bg-white hover:text-blue-900 hover:border-white flex items-center justify-center gap-2 active:scale-95">
-                    <i class="far fa-file-pdf"></i>
-                    Rapport d'Activités
-                </a>
             </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-bg" style="background-image: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.2)), url('assets/img/img3.jpg');"></div>
+            <div class="max-w-7xl mx-auto h-full flex items-center px-4 relative z-10 slide-content">
+                <div class="md:w-3/4">
+                    <h1 class="text-4xl md:text-7xl font-black mb-6 leading-tight">Formation <br> <span class="text-blue-400">Standardisée</span></h1>
+                    <p class="text-lg md:text-2xl mb-8 max-w-2xl text-gray-200 border-l-4 border-blue-400 pl-6">
+                        Nous formons les médecins urgentistes aux protocoles internationaux les plus rigoureux.
+                    </p>
+                    <div class="btn-container">
+                        <a href="#expertise" class="inline-flex items-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-500 transition-all">
+                            Nos programmes <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-bg" style="background-image: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.2)), url('assets/img/image.png');"></div>
+            <div class="max-w-7xl mx-auto h-full flex items-center px-4 relative z-10 slide-content">
+                <div class="md:w-3/4">
+                    <h1 class="text-4xl md:text-7xl font-black mb-6 leading-tight">Partenaire <br> <span class="text-green-400">Stratégique</span></h1>
+                    <p class="text-lg md:text-2xl mb-8 max-w-2xl text-gray-200 border-l-4 border-green-400 pl-6">
+                        En collaboration avec l'OMS et la Banque Mondiale pour un système de santé résilient.
+                    </p>
+                    <div class="btn-container">
+                        <a href="#expertise" class="inline-flex items-center gap-3 bg-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-500 transition-all">
+                            Nos réalisations <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slider-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
         </div>
     </section>
 
@@ -646,6 +640,47 @@
         }
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const slideInterval = 6000;
+
+    // Vérification de sécurité : si les éléments n'existent pas, on arrête tout
+    if (slides.length === 0 || dots.length === 0) {
+        console.error("Slider AMUCAM : Slides ou Dots manquants dans le HTML");
+        return;
+    }
+
+    function goToSlide(n) {
+        // On retire la classe active à la slide et au point actuels
+        slides[currentSlide].classList.remove('active');
+        dots[currentSlide].classList.remove('active');
+        
+        // Calcul de la nouvelle slide
+        currentSlide = (n + slides.length) % slides.length;
+        
+        // On ajoute la classe active sur les nouveaux
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+        goToSlide(currentSlide + 1);
+    }
+
+    // Lancement du cycle automatique
+    let timer = setInterval(nextSlide, slideInterval);
+
+    // Gestion du clic sur les points (Dots)
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            clearInterval(timer); // On stoppe le chrono
+            goToSlide(index);     // On change de slide
+            timer = setInterval(nextSlide, slideInterval); // On relance
+        });
+    });
+});
     
     </script>
 </body>
