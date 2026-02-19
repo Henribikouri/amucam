@@ -138,7 +138,7 @@
     }
 
     .slide.active .slide-bg {
-        transform: scale(1);
+        transform: scale(1) !important;
     }
 
     /* Animation du texte (Slide up) */
@@ -254,6 +254,24 @@
         transform: scale(1.1);
         transition: transform 6s linear;
     }
+
+    .slide.active .slide-content h1 { 
+        opacity: 1; 
+        transform: translateY(0); 
+        transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.3s;
+    }
+    .slide.active .slide-content p { 
+        opacity: 1; 
+        transform: translateY(0); 
+        transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.5s;
+    }
+    .slide.active .slide-content .btn-container { 
+        opacity: 1; 
+        transform: translateY(0); 
+        transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.7s;
+    }
+
+    
 </style>
 </head>
 <body class="font-sans text-gray-900 bg-gray-50">
@@ -301,7 +319,7 @@
 
     <section class="hero-slider-container text-white">
     
-        <div class="slide active">
+        <div class="slide">
             <div class="slide-bg" style="background-image: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.2)), url('assets/img/img2.jpg');"></div>
             <div class="max-w-7xl mx-auto h-full flex items-center px-4 relative z-10 slide-content">
                 <div class="md:w-3/4">
@@ -501,15 +519,7 @@
     </footer>
 
     <script>
-        // 1. Slider Hero Automatique
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.hero-slide');
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-        setInterval(nextSlide, 5000); // Change toutes les 5 secondes
+
 
         // 2. Menu Mobile Toggle
         const btn = document.getElementById('mobile-menu-button');
@@ -612,7 +622,7 @@
             });
         }, { threshold: 0.5 });
 
-        document.querySelectorAll('.counter').forEach(c => observerStats.observe(c.parentElement));
+    document.querySelectorAll('.counter').forEach(c => observerStats.observe(c.parentElement));
 
     const nav = document.getElementById('main-nav');
     const mobileMenuBtn = document.getElementById('mobile-menu-button');
@@ -646,41 +656,37 @@
     const dots = document.querySelectorAll('.dot');
     const slideInterval = 6000;
 
-    // Vérification de sécurité : si les éléments n'existent pas, on arrête tout
-    if (slides.length === 0 || dots.length === 0) {
-        console.error("Slider AMUCAM : Slides ou Dots manquants dans le HTML");
-        return;
-    }
+    if (slides.length === 0 || dots.length === 0) return;
 
     function goToSlide(n) {
-        // On retire la classe active à la slide et au point actuels
         slides[currentSlide].classList.remove('active');
         dots[currentSlide].classList.remove('active');
         
-        // Calcul de la nouvelle slide
         currentSlide = (n + slides.length) % slides.length;
         
-        // On ajoute la classe active sur les nouveaux
         slides[currentSlide].classList.add('active');
         dots[currentSlide].classList.add('active');
     }
 
-    function nextSlide() {
-        goToSlide(currentSlide + 1);
-    }
+    // --- LA CLÉ EST ICI ---
+    // On force le retrait et l'ajout immédiat pour déclencher les animations CSS
+    slides[0].classList.remove('active'); 
+    void slides[0].offsetWidth; // "Magic trigger" : force le navigateur à recalculer le style
+    slides[0].classList.add('active');
+    // -----------------------
 
-    // Lancement du cycle automatique
-    let timer = setInterval(nextSlide, slideInterval);
+    let timer = setInterval(() => goToSlide(currentSlide + 1), slideInterval);
 
-    // Gestion du clic sur les points (Dots)
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            clearInterval(timer); // On stoppe le chrono
-            goToSlide(index);     // On change de slide
-            timer = setInterval(nextSlide, slideInterval); // On relance
+            clearInterval(timer);
+            goToSlide(index);
+            timer = setInterval(() => goToSlide(currentSlide + 1), slideInterval);
         });
     });
 });
+
+    
     
     </script>
 </body>
