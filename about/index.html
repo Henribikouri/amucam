@@ -123,27 +123,6 @@
     from { width: 0; }
     to { width: 100%; }
 }
-
-#main-nav {
-        transition: all 0.4s ease-in-out;
-    }
-
-    /* Classe qui sera ajoutée en JS quand on scrolle */
-    .nav-scrolled {
-        background-color: white !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-        padding-top: 0.5rem !important;
-        padding-bottom: 0.5rem !important;
-    }
-
-    /* 2. Suppression de la marge forcée */
-    main {
-        margin-top: -80px; /* On remonte tout le bloc main de la hauteur exacte de la nav */
-    }
-
-    .hero-about-section {
-        padding-top: 120px !important; /* On compense la remontée par du padding interne pour centrer le texte */
-    }
 </style>
 </head>
 <body class="font-sans text-gray-900 bg-gray-50">
@@ -274,7 +253,7 @@
                                         
                                         <div class="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-transparent to-transparent"></div>
                                         
-                                        <a href="https://wa.me/237XXXXXXXXX" target="_blank" class="whatsapp-btn absolute top-6 right-6 w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl shadow-2xl hover:scale-110 transition-transform">
+                                        <a href="https://wa.me/237681252415" target="_blank" class="whatsapp-btn absolute top-6 right-6 w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl shadow-2xl hover:scale-110 transition-transform">
                                             <i class="fab fa-whatsapp"></i>
                                         </a>
 
@@ -338,13 +317,13 @@
     });
 
     // Effet parallaxe léger sur la photo du président
-    document.addEventListener('mousemove', (e) => {
-        const card = document.querySelector('.president-card');
-        if(!card) return;
-        const x = (window.innerWidth / 2 - e.pageX) / 50;
-        const y = (window.innerHeight / 2 - e.pageY) / 50;
-        card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-    });
+    // document.addEventListener('mousemove', (e) => {
+    //     const card = document.querySelector('.president-card');
+    //     if(!card) return;
+    //     const x = (window.innerWidth / 2 - e.pageX) / 50;
+    //     const y = (window.innerHeight / 2 - e.pageY) / 50;
+    //     card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    // });
 
     document.addEventListener('DOMContentLoaded', function() {
         const aboutSlides = document.querySelectorAll('.about-slide');
