@@ -146,7 +146,7 @@
                 <div class="hidden md:flex items-center space-x-8 font-medium">
                     <a href="/index.html" class="text-blue-900 hover:text-blue-600 transition">Accueil</a>
                     <a href="index.html" class="text-gray-600 hover:text-blue-600 transition">À propos</a>
-                    <a href="#expertise" class="text-gray-600 hover:text-blue-600 transition">Nos Formations </a>
+                    <a href="/formations/" class="text-gray-600 hover:text-blue-600 transition">Nos Formations </a>
                     <a href="#partenaires" class="text-gray-600 hover:text-blue-600 transition">Nos realisations</a>
                     <a href="#" class="bg-medical text-white px-6 py-2 rounded-full hover:bg-blue-700 transition shadow-lg hover:shadow-blue-200">Contact</a>
                 </div>
@@ -162,11 +162,14 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-2 shadow-xl">
             <a href="/index.html" class="block px-3 py-2 text-blue-900 font-bold">Accueil</a>
             <a href="index.html" class="block px-3 py-2 text-gray-600">À propos</a>
-            <a href="#expertise" class="block px-3 py-2 text-gray-600">Nos Formations</a>
+            <a href="/formations/" class="block px-3 py-2 text-gray-600">Nos Formations</a>
             <a href="#partenaires" class="block px-3 py-2 text-gray-600">Nos realisations</a>
             <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center">Contact</a>
         </div>
     </nav>
+     <div class="fixed top-0 left-0 w-full h-1 z-[100]">
+        <div id="scroll-progress" class="h-full bg-yellow-500 w-0 transition-all duration-150"></div>
+    </div>
 
     <main class="bg-white">
         <section class="relative overflow-hidden">
@@ -269,7 +272,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-8 flex flex-col gap-4">
-                                    <a href="#" class="group flex items-center justify-between bg-blue-900 hover:bg-white border-2 border-blue-900 text-white hover:text-blue-900 p-4 rounded-[1.5rem] transition-all duration-300 shadow-xl">
+                                    <a href="/formations/" class="group flex items-center justify-between bg-blue-900 hover:bg-white border-2 border-blue-900 text-white hover:text-blue-900 p-4 rounded-[1.5rem] transition-all duration-300 shadow-xl">
                                         <div class="flex flex-col">
                                             <span class="text-[10px] uppercase font-bold opacity-60">Prêt à sauver des vies ?</span>
                                             <span class="font-black text-lg">Découvrir nos formations</span>
@@ -346,6 +349,7 @@
         // Lancer le cycle toutes le 5 secondes
         setInterval(nextAboutSlide, 5000);
     });
+    
 </script>
 </body>
 </html>
