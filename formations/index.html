@@ -194,6 +194,112 @@ section {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-15px); }
 }
+
+/* Animation d'ouverture de la fiche technique */
+    .modal-open-anim {
+        animation: modalReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalReveal {
+        from { opacity: 0; transform: scale(0.95) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Carte de contenu style "Dossier Technique" */
+    .tech-sheet {
+        position: relative;
+        border-top: 8px solid #dc2626; /* Rouge SST */
+        background: rgba(255, 255, 255, 0.98);
+    }
+
+    #close-sst {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        cursor: pointer;
+        background: #dc2626;
+        color: white;
+         /* Fond très léger */
+        width: 45px;
+        height: 45px;
+        border-radius: 12px; /* Style plus moderne que le cercle parfait */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(0,0,0,0.05);
+        /* color: #1e3a8a; */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Badge de durée style chronomètre */
+    .duration-badge {
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        border: 1px solid #fecaca;
+        color: #dc2626;
+    }
+
+    /* Image Hover Effect */
+    .training-img {
+        transition: transform 0.5s ease;
+        cursor: zoom-in;
+    }
+    .training-img:hover {
+        transform: scale(1.03);
+    }
+
+    /* Classe pour cacher la modale proprement */
+.modal-hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Classe pour l'afficher avec une transition fluide */
+.modal-visible {
+    display: flex !important;
+        z-index: 9999;
+        
+        /* 1. L'OPACITÉ : Le '0.4' contrôle la noirceur (0 = transparent, 1 = noir total) */
+        background-color: rgba(30, 58, 138, 0.4); 
+
+        /* 2. LE FLOU : Le '8px' contrôle l'intensité (0px = net, 20px = brouillard total) */
+        backdrop-filter: blur(2px);
+        
+        /* Sécurité pour les anciens navigateurs Safari */
+        -webkit-backdrop-filter: blur(8px);
+        
+        transition: all 0.4s ease;
+    }
+
+/* On force la modale à être au-dessus de tout (z-index 9999) */
+    .modal-hidden {
+        display: none !important;
+    }
+
+    .modal-visible {
+        display: flex !important;
+        z-index: 9999;
+    }
+
+    /* Style du bouton fermer pour être sûr qu'il soit visible */
+    
+
+   #close-sst:hover {
+        background: #dc2626;
+        color: white;
+        transform: scale(1.1);
+        box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.2);
+    }
+
+    /* Ajustement pour mobile : on le rend un peu plus gros pour le tactile */
+    @media (max-width: 768px) {
+        #close-sst {
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+        }
+    }
 </style>
 </head>
 <body class="font-sans text-gray-900 bg-gray-50">
@@ -272,12 +378,12 @@ section {
                         </div>
 
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <button class="course-pill-base course-pill-blue" data-aos="zoom-in" data-aos-delay="200">SST</button>
-                        <button class="course-pill-base course-pill-blue" data-aos="zoom-in" data-aos-delay="300">PSE 1&2</button>
-                        <button class="course-pill-base course-pill-blue" data-aos="zoom-in" data-aos-delay="400">UDAE</button>
-                        <button class="course-pill-base course-pill-blue" data-aos="zoom-in" data-aos-delay="500">PSC 1&2</button>
-                        <button class="course-pill-base course-pill-blue" data-aos="zoom-in" data-aos-delay="600">PSMC</button>
-                        <button class="course-pill-base course-pill-blue" data-aos="zoom-in" data-aos-delay="700">APS</button>
+                        <button class="course-pill-base course-pill-blue" data-course="sst" data-aos="zoom-in" data-aos-delay="200">SST</button>
+                        <button class="course-pill-base course-pill-blue" data-course="pse" data-aos="zoom-in" data-aos-delay="300">PSE 1&2</button>
+                        <button class="course-pill-base course-pill-blue" data-course="udae" data-aos="zoom-in" data-aos-delay="400">UDAE</button>
+                        <button class="course-pill-base course-pill-blue" data-course="psc" data-aos="zoom-in" data-aos-delay="500">PSC 1&2</button>
+                        <button class="course-pill-base course-pill-blue" data-course="psmc" data-aos="zoom-in" data-aos-delay="600">PSMC</button>
+                        <button class="course-pill-base course-pill-blue" data-course="aps" data-aos="zoom-in" data-aos-delay="700">APS</button>
                     </div>
                     </div>
 
@@ -340,8 +446,113 @@ section {
 
 
     </main>
+       <!-- LES FORMATION SST -->
 
-    
+    <div id="modal-sst" class="fixed inset-0 p-4 md:p-8 bg-blue-900/80 backdrop-blur-xl modal-hidden flex items-center justify-center">
+        <div class="tech-sheet w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-[3rem] shadow-2xl modal-open-anim relative">
+            <div id="close-sst">
+                <i class="fas fa-times text-2xl"></i>
+            </div>
+            <div class="p-8 md:p-16">
+                <div class="flex flex-col md:flex-row items-center gap-10 mb-16 border-b border-gray-100 pb-12">
+                    <div class="w-40 h-40 flex-shrink-0 bg-white shadow-xl rounded-full p-6 flex items-center justify-center border border-gray-50">
+                        <img src="/assets/img/forms/sst.png" alt="Logo SST" class="w-full h-auto">
+                    </div>
+                    <div class="text-center md:text-left">
+                        <h2 class="text-red-600 font-black text-sm uppercase tracking-[0.3em] mb-2">Fiche Technique Formation</h2>
+                        <h1 class="text-4xl md:text-6xl font-black text-blue-900 tracking-tighter">
+                            SST <span class="text-gray-400 font-light">ou</span> <br>
+                            <span class="text-red-600">Sauveteur Secouriste du Travail</span>
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                    <div class="rounded-3xl overflow-hidden h-64 shadow-lg">
+                        <img src="/assets/img/forms/sst1.jpeg" class="training-img w-full h-full object-cover" alt="Session SST 1">
+                    </div>
+                    <div class="rounded-3xl overflow-hidden h-64 shadow-lg">
+                        <img src="/assets/img/forms/sst2.jpeg" class="training-img w-full h-full object-cover" alt="Session SST 2">
+                    </div>
+                    <div class="rounded-3xl overflow-hidden h-64 shadow-lg">
+                        <img src="/assets/img/forms/sst3.jpeg" class="training-img w-full h-full object-cover" alt="Session SST 3">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                    
+                    <div class="lg:col-span-7">
+                        <h3 class="text-2xl font-black text-blue-900 mb-6 flex items-center gap-3">
+                            <i class="fas fa-info-circle text-red-600"></i> Contexte Professionnel
+                        </h3>
+                        <p class="text-xl text-gray-600 leading-relaxed italic border-l-4 border-red-600 pl-6 mb-8">
+                            Le « lieu du travail » ou milieu professionnel est un cadre de vie dans lequel une personne active passe la majeure partie de son temps pour les nécessités de service.
+                        </p>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Dans ce cadre, l’ensemble du personnel doit, pour son épanouissement et pour produire un meilleur rendement, se sentir en sécurité, un malaise ou un accident pouvant survenir de manière inopinée à n’importe qui, n’importe où et n’importe quand.
+                        </p>
+                    </div>
+
+                    <div class="lg:col-span-5 space-y-8">
+                        <div class="bg-slate-50 p-8 rounded-[2rem] border border-gray-100">
+                            <h4 class="font-black text-blue-900 uppercase text-sm tracking-widest mb-4">Objectifs</h4>
+                            <p class="text-gray-600 font-medium">
+                                L’acquisition des compétences qui permettent le développement de la prévention, de l’identification des risques et de l’intervention appropriée en milieu professionnel.
+                            </p>
+                        </div>
+
+                        <div class="duration-badge p-8 rounded-[2rem] flex items-center justify-between">
+                            <div>
+                                <h4 class="font-black uppercase text-sm tracking-widest mb-1">Durée de formation</h4>
+                                <p class="text-2xl font-black">8h à 12h</p>
+                            </div>
+                            <div class="text-right">
+                                <i class="fas fa-clock text-3xl opacity-30"></i>
+                                <p class="text-sm font-bold">1 à 2 jours</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16 bg-blue-900 rounded-[3rem] p-10 text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-12 opacity-10">
+                        <i class="fas fa-shield-alt text-9xl"></i>
+                    </div>
+                    
+                    <h3 class="text-2xl font-black mb-8 relative z-10 flex items-center gap-4">
+                        <span class="w-10 h-10 bg-yellow-500 text-blue-900 rounded-full flex items-center justify-center text-sm">8</span>
+                        Contenu des Modules Internationaux
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+                        <div class="space-y-4">
+                            <p class="flex items-center gap-4 text-blue-100">
+                                <i class="fas fa-check-circle text-yellow-500"></i> Protection et Alerte
+                            </p>
+                            <p class="flex items-center gap-4 text-blue-100">
+                                <i class="fas fa-check-circle text-yellow-500"></i> Secours de la victime qui saigne
+                            </p>
+                            <p class="flex items-center gap-4 text-blue-100">
+                                <i class="fas fa-check-circle text-yellow-500"></i> Secours de la victime qui s'étouffe
+                            </p>
+                        </div>
+                        
+                        <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
+                            <h4 class="text-yellow-500 font-black uppercase text-xs tracking-[0.2em] mb-4">Exclusivité AMUCAM (Adaptation locale)</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-center gap-3 font-bold text-white">
+                                    <i class="fas fa-plus-square text-red-500"></i> Prise en charge des morsures de serpents
+                                </li>
+                                <li class="flex items-center gap-3 font-bold text-white">
+                                    <i class="fas fa-plus-square text-red-500"></i> Gestion des piqûres d'insectes
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     
     <footer class="bg-blue-900 text-white py-16 px-4">
@@ -380,6 +591,57 @@ AOS.init({
     // Utilise notre courbe personnalisée si possible, sinon une douce par défaut
     easing: 'ease-out-cubic'
   });
+
+  // Sélection des éléments
+    const btnSST = document.querySelector('[data-course="sst"]'); // On va ajouter ce data-attribute
+    const modalSST = document.getElementById('modal-sst');
+    const closeSST = document.getElementById('close-sst');
+
+    // Fonction pour ouvrir la modale
+    if(btnSST) {
+        btnSST.addEventListener('click', () => {
+            modalSST.classList.remove('modal-hidden');
+            modalSST.classList.add('modal-visible');
+            document.body.style.overflow = 'hidden'; // Empêche le scroll en arrière-plan
+        });
+    }
+
+    // Fonction pour fermer la modale
+    if(closeSST) {
+        closeSST.addEventListener('click', () => {
+            modalSST.classList.add('modal-hidden');
+            modalSST.classList.remove('modal-visible');
+            document.body.style.overflow = 'auto'; // Réactive le scroll
+        });
+    }
+
+    // Fermer si on clique à l'extérieur de la fiche technique
+    window.addEventListener('click', (e) => {
+        if (e.target === modalSST) {
+            modalSST.classList.add('modal-hidden');
+            document.body.style.overflow = 'auto';
+        }
+    });
+    // 3. Fermer en cliquant n'importe où "à côté" de la fiche
+    modalSST.onclick = function(e) {
+        // Si l'élément cliqué est le fond bleu (modal-sst) et pas la fiche blanche
+        if (e.target === modalSST) {
+            fermerModaleSST();
+        }
+    };
+    // Fonction réutilisable pour fermer
+    function fermerModaleSST() {
+        modalSST.classList.add('modal-hidden');
+        modalSST.classList.remove('modal-visible');
+        document.body.style.overflow = 'auto'; // Rend le scroll au site
+    }
+
+    // Optionnel : Touche Echap pour fermer (Le détail de l'expert)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") fermerModaleSST();
+    });
+
+    
     </script>
     
 </body>
