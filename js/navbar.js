@@ -6,6 +6,122 @@
             menu.classList.toggle('hidden');
         });
 
+        // 2bis. Sous-navigation "À propos" en fil d'Ariane (desktop)
+        (function () {
+            const aboutItem = document.getElementById('about-nav-item');
+            const aboutSubnav = document.getElementById('about-subnav');
+            const aboutChevronBtn = document.getElementById('about-chevron-btn');
+            if (!aboutItem || !aboutSubnav) return;
+
+            let closeTimer;
+
+            function openAboutSubnav() {
+                clearTimeout(closeTimer);
+                aboutItem.classList.add('about-open');
+                aboutSubnav.classList.add('open');
+                if (aboutChevronBtn) aboutChevronBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeAboutSubnav() {
+                aboutItem.classList.remove('about-open');
+                aboutSubnav.classList.remove('open');
+                if (aboutChevronBtn) aboutChevronBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            function scheduleClose() {
+                clearTimeout(closeTimer);
+                closeTimer = setTimeout(closeAboutSubnav, 200);
+            }
+
+            [aboutItem, aboutSubnav].forEach((el) => {
+                el.addEventListener('mouseenter', openAboutSubnav);
+                el.addEventListener('mouseleave', scheduleClose);
+            });
+
+            aboutItem.addEventListener('focusin', openAboutSubnav);
+            aboutItem.addEventListener('focusout', (e) => {
+                if (!aboutItem.contains(e.relatedTarget) && !aboutSubnav.contains(e.relatedTarget)) {
+                    scheduleClose();
+                }
+            });
+
+            if (aboutChevronBtn) {
+                aboutChevronBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (aboutSubnav.classList.contains('open')) {
+                        closeAboutSubnav();
+                    } else {
+                        openAboutSubnav();
+                    }
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (!aboutItem.contains(e.target) && !aboutSubnav.contains(e.target)) {
+                    closeAboutSubnav();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeAboutSubnav();
+            });
+        })();
+
+        // 2ter. Accordéon "À propos" (mobile)
+        (function () {
+            const mobileAboutToggle = document.getElementById('mobile-about-toggle');
+            const mobileAboutSublinks = document.getElementById('mobile-about-sublinks');
+            if (!mobileAboutToggle || !mobileAboutSublinks) return;
+
+            mobileAboutToggle.addEventListener('click', () => {
+                const isOpen = mobileAboutSublinks.classList.toggle('open');
+                const chevron = mobileAboutToggle.querySelector('.about-chevron');
+                if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                mobileAboutToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+        })();
+
+        // 2quater. Recherche navbar (desktop + mobile) — champ toujours visible
+        function runSiteSearch(query) {
+            const q = query.trim();
+            if (!q) return;
+            const url = 'https://www.google.com/search?q=' + encodeURIComponent('site:' + window.location.hostname + ' ' + q);
+            window.open(url, '_blank', 'noopener');
+        }
+
+        document.querySelectorAll('.nav-search-box').forEach((box) => {
+            const icon = box.querySelector('i');
+            const input = box.querySelector('input');
+            if (!input) return;
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); runSiteSearch(input.value); }
+            });
+            if (icon) {
+                icon.addEventListener('click', () => {
+                    if (input.value.trim()) runSiteSearch(input.value);
+                    else input.focus();
+                });
+            }
+        });
+
+        // 2quinquies. Sélecteur de langue (desktop)
+        (function () {
+            const switcher = document.getElementById('lang-switch');
+            const toggle = document.getElementById('lang-toggle');
+            if (!switcher || !toggle) return;
+
+            toggle.addEventListener('click', () => {
+                const isOpen = switcher.classList.toggle('open');
+                toggle.setAttribute('aria-expanded', String(isOpen));
+            });
+            document.addEventListener('click', (e) => {
+                if (!switcher.contains(e.target)) switcher.classList.remove('open');
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') switcher.classList.remove('open');
+            });
+        })();
+
         // 3. Animation Reveal au Scroll
         const observerOptions = { threshold: 0.15 };
         const observer = new IntersectionObserver((entries) => {

@@ -26,6 +26,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
     /* Pilules pour la section blanche */
@@ -207,7 +208,7 @@ section {
     /* Carte de contenu style "Dossier Technique" */
     .tech-sheet {
         position: relative;
-        border-top: 8px solid #dc2626; /* Rouge SST */
+        border-top: 8px solid #16a34a; /* Vert SST */
         background: rgba(255, 255, 255, 0.98);
         display: flex;
         flex-direction: column;
@@ -253,7 +254,7 @@ section {
         right: 20px;
         z-index: 100;
         cursor: pointer;
-        background: #dc2626;
+        background: #16a34a;
         color: white;
          /* Fond très léger */
         width: 45px;
@@ -269,9 +270,9 @@ section {
 
     /* Badge de durée style chronomètre */
     .duration-badge {
-        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        border: 1px solid #fecaca;
-        color: #dc2626;
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        border: 1px solid #bbf7d0;
+        color: #16a34a;
     }
 
     /* Image Hover Effect */
@@ -314,10 +315,10 @@ section {
     
 
    #close-sst:hover {
-        background: #dc2626;
+        background: #16a34a;
         color: white;
         transform: scale(1.1);
-        box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.2);
+        box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.2);
     }
 
     /* Ajustement pour mobile : on le rend un peu plus gros pour le tactile */
@@ -350,15 +351,43 @@ section {
                 </div>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-8 font-medium">
-                    <a href="/index.html" class="text-blue-900 hover:text-blue-600 transition">Accueil</a>
-                    <a href="/about/" class="text-gray-600 hover:text-blue-600 transition">À propos</a>
-                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition">Nos Formations </a>
+                <div class="hidden lg:flex items-center space-x-8 nav-serif font-medium">
+                    <a href="/index.html" class="nav-tab-link transition">Accueil</a>
+                    <div id="about-nav-item" class="nav-link-about">
+                        <a href="/about/" id="about-trigger" class="transition">À propos</a>
+                        <button type="button" id="about-chevron-btn" class="about-chevron-btn" aria-expanded="false" aria-controls="about-subnav" aria-label="Afficher le sous-menu À propos">
+                            <i class="fas fa-chevron-down about-chevron" aria-hidden="true"></i>
+                        </button>
+                        <span class="about-underline" aria-hidden="true"></span>
+                    </div>
+                    <a href="index.html" class="nav-tab-link nav-active transition">Nos Formations </a>
                     <!-- <a href="#partenaires" class="text-gray-600 hover:text-blue-600 transition">Nos realisations</a> -->
+
+                    <div class="flex items-center gap-2 pl-3 ml-1 border-l border-gray-200">
+                        <div id="nav-search" class="nav-search-box">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                            <input type="text" id="search-input" placeholder="Rechercher..." autocomplete="off" aria-label="Rechercher sur le site">
+                        </div>
+
+                        <div id="lang-switch" class="relative">
+                            <button type="button" id="lang-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Choisir la langue">
+                                <i class="fas fa-globe" aria-hidden="true"></i>
+                                <span>FR</span>
+                                <i class="fas fa-chevron-down lang-chevron" aria-hidden="true"></i>
+                            </button>
+                            <div class="lang-menu" role="menu">
+                                <button type="button" class="lang-option active" data-lang="fr" role="menuitem">Français</button>
+                                <button type="button" class="lang-option disabled" data-lang="en" role="menuitem" disabled title="Bientôt disponible">
+                                    English <span class="lang-soon">Bientôt</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <a href="#" class="bg-medical text-white px-6 py-2 rounded-full hover:bg-blue-700 transition shadow-lg hover:shadow-blue-200">Contact</a>
                 </div>
 
-                <div class="md:hidden flex items-center">
+                <div class="lg:hidden flex items-center">
                     <button id="mobile-menu-button" class="text-blue-900 focus:outline-none text-2xl">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -366,12 +395,48 @@ section {
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-2 shadow-xl">
-            <a href="/index.html" class="block px-3 py-2 text-blue-900 font-bold">Accueil</a>
-            <a href="/about/" class="block px-3 py-2 text-gray-600">À propos</a>
-            <a href="index.html" class="block px-3 py-2 text-gray-600">Nos Formations</a>
+        <div id="about-subnav" class="hidden lg:block" role="region" aria-label="Sous-navigation À propos">
+            <div class="subnav-inner">
+                <a href="/about/" class="subnav-link">Qui sommes-nous ?</a>
+                <span class="subnav-sep"><i class="fas fa-chevron-right"></i></span>
+                <a href="/about/#actualites" class="subnav-link">Actualités</a>
+                <span class="subnav-sep"><i class="fas fa-chevron-right"></i></span>
+                <a href="/about/#galerie" class="subnav-link">Galerie</a>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 px-4 pt-3 pb-6 space-y-1 shadow-xl nav-serif">
+            <div class="mobile-search-wrap">
+                <div class="nav-search-box">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="mobile-search-input" placeholder="Rechercher..." autocomplete="off" aria-label="Rechercher sur le site">
+                </div>
+            </div>
+
+            <a href="/index.html" class="mobile-nav-link">Accueil</a>
+
+            <div>
+                <button type="button" id="mobile-about-toggle" class="w-full flex items-center justify-between px-3 py-2" aria-expanded="false" aria-controls="mobile-about-sublinks">
+                    <span>À propos</span>
+                    <i class="fas fa-chevron-down about-chevron" aria-hidden="true"></i>
+                </button>
+                <div id="mobile-about-sublinks" class="mobile-about-sublinks">
+                    <a href="/about/">Qui sommes-nous ?</a>
+                    <a href="/about/#actualites">Actualités</a>
+                    <a href="/about/#galerie">Galerie</a>
+                </div>
+            </div>
+
+            <a href="index.html" class="mobile-nav-link nav-active">Nos Formations</a>
             <!-- <a href="#partenaires" class="block px-3 py-2 text-gray-600">Nos realisations</a> -->
-            <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center">Contact</a>
+
+            <div class="mobile-lang-row">
+                <i class="fas fa-globe" aria-hidden="true"></i>
+                <button type="button" class="lang-pill active" data-lang="fr">Français</button>
+                <button type="button" class="lang-pill disabled" data-lang="en" disabled title="Bientôt disponible">English</button>
+            </div>
+
+            <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center mt-2">Contact</a>
         </div>
     </nav>
     <div class="fixed top-0 left-0 w-full h-1 z-[100]">
@@ -495,38 +560,38 @@ section {
             <div class="p-8 md:p-16">
                 <div class="flex flex-col md:flex-row items-center gap-10 mb-16 border-b border-gray-100 pb-12">
                     <div class="w-40 h-40 flex-shrink-0 bg-white shadow-xl rounded-full p-6 flex items-center justify-center border border-gray-50">
-                        <img src="/assets/img/forms/sst.png" alt="Logo SST" class="w-full h-auto">
+                        <img src="/assets/img/forms/sst1.png" alt="Logo SST" class="w-full h-auto">
                     </div>
                     <div class="text-center md:text-left">
-                        <h2 class="text-red-600 font-black text-sm uppercase tracking-[0.3em] mb-2">Fiche Technique de la Formation</h2>
+                        <h2 class="text-green-600 font-black text-sm uppercase tracking-[0.3em] mb-2">Fiche Technique de la Formation</h2>
                         <h1 class="text-4xl md:text-6xl font-black text-blue-900 tracking-tighter">
                             SST <span class="text-gray-400 font-light">ou</span> <br>
-                            <span class="text-red-600">Sauveteur Secouriste du Travail</span>
+                            <span class="text-green-600">Sauveteur Secouriste du Travail</span>
                         </h1>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
                     <div class="rounded-3xl overflow-hidden h-64 shadow-lg">
-                        <img src="/assets/img/img6.jpeg" class="training-img w-full h-full object-cover" alt="Session SST 1">
+                        <img src="/assets/img/SST/photo1.jpg" class="training-img w-full h-full object-cover" alt="Session SST 1">
                     </div>
                     <div class="rounded-3xl overflow-hidden h-64 shadow-lg">
                         <img src="/assets/img/forms/sst2.jpeg" class="training-img w-full h-full object-cover" alt="Session SST 2">
                     </div>
                     <div class="rounded-3xl overflow-hidden h-64 shadow-lg">
-                        <img src="/assets/img/forms/sst3.jpeg" class="training-img w-full h-full object-cover" alt="Session SST 3">
+                        <img src="/assets/img/SST/photo3.jpg" class="training-img w-full h-full object-cover" alt="Session SST 3">
                     </div>
                 </div>
                 <div class="space-y-12">
                     <div class="w-full" data-aos="fade-up">
                         <h3 class="text-2xl font-black text-blue-900 mb-6 flex items-center gap-4">
-                            <span class="p-3 bg-red-50 rounded-xl text-red-600">
+                            <span class="p-3 bg-green-50 rounded-xl text-green-600">
                                 <i class="fas fa-info-circle"></i>
                             </span>
                             Contexte Professionnel
                         </h3>
                         <div class="space-y-6">
-                            <p class="text-xl text-gray-600 leading-relaxed italic border-l-4 border-red-600 pl-6 bg-slate-50 py-6 rounded-r-3xl">
+                            <p class="text-xl text-gray-600 leading-relaxed italic border-l-4 border-green-600 pl-6 bg-slate-50 py-6 rounded-r-3xl">
                                 Le « lieu du travail » ou milieu professionnel est un cadre de vie dans lequel une personne active passe la majeure partie de son temps pour les nécessités de service.
                             </p>
                             <p class="text-gray-600 text-lg leading-relaxed px-2">
@@ -544,7 +609,7 @@ section {
                         </h3>
                         <div class="bg-white border-2 border-slate-100 p-8 rounded-[2.5rem] shadow-sm">
                             <p class="text-gray-600 font-medium text-lg leading-relaxed">
-                                L’acquisition des compétences qui permettent le développement de la prévention, de l’identification des risques et de l’intervention appropriée en milieu professionnel.
+                                - La maîtrise par le personnel des Entreprises, des gestes essentiels  de survie, étant admis que le secouriste est le premier maillon de la chaîne de survie. <br> -  L’acquisition des compétences qui permettent le développement de la prévention, de l’identification des risques et de l’intervention appropriée en milieu professionnel.
                             </p>
                         </div>
                     </div>
@@ -565,25 +630,26 @@ section {
                             <p class="flex items-center gap-4 text-blue-100">
                                 <i class="fas fa-check-circle text-yellow-500"></i> Huit (08) modules internationaux
                             </p>
-                            <p class="flex items-center gap-4 text-blue-100">
-                                <i class="fas fa-check-circle text-yellow-500"></i> deux (02) modules specifiques
-                            </p>
+                            
                         </div>
                         <div class="ml-12 space-y-2 border-l border-white/10 pl-4">
+                            <p class="flex items-center gap-4 text-blue-100">
+                                <i class="fas fa-check-circle text-yellow-500"></i> un (01) module specifique au choix
+                            </p>
                             <p class="text-blue-200 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
                                 Les morsures de serpents
                             </p>
                             <p class="text-blue-200 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
                                 Les piqûres d’insectes
                             </p>
                             <p class="text-blue-200 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
                                 L'electrisation 
                             </p>
                             <p class="text-blue-200 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
                                 La noyade 
                             </p>
                         </div>
@@ -631,7 +697,7 @@ section {
                         <img src="/assets/img/forms/pse1.jpg" class="training-img w-full h-full object-cover" alt="Formation PSE Terrain 1">
                     </div>
                     <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                        <img src="/assets/img/forms/pse2.jpeg" class="training-img w-full h-full object-cover" alt="Formation PSE Terrain 2">
+                        <img src="/assets/img/sap.jpg" class="training-img w-full h-full object-cover" alt="Formation PSE Terrain 2">
                     </div>
                     <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
                         <img src="/assets/img/forms/pse3.jpg" class="training-img w-full h-full object-cover" alt="Formation PSE Terrain 3">
@@ -652,7 +718,7 @@ section {
                             </p>
                             <p class="text-gray-600 text-lg leading-relaxed px-2">
                                 D’où la nécessité de former les secouristes à agir comme une équipe coordonnée et à utiliser des appareils simples. Cette formation se fait à deux niveaux PSE 1 & 2. <br>
-                                <span class="text-red-600 font-bold uppercase text-sm italic mt-4 block">Le recyclage pour les titulaires de ces formations est obligatoire tous les ans.</span>
+                                <span class="text-red-600 font-bold uppercase text-sm italic mt-4 block">Le recyclage pour les titulaires de ces formations est obligatoire tous les 2 ans, durée de 2 jours </span>
                             </p>
                         </div>
                     </div>
@@ -666,7 +732,7 @@ section {
                         </h3>
                         <div class="bg-white border-2 border-slate-100 p-8 rounded-[2.5rem] shadow-sm">
                             <p class="text-gray-600 font-medium text-lg leading-relaxed">
-                                L’acquisition des compétences qui permettent d’agir au sein d’une équipe formée pour porter secours à plusieurs victimes en utilisant du matériel de premiers secours élémentaire.
+                                L’acquisition des compétences qui permettent d’agir au sein d’une équipe formée et organisée pour porter secours à plusieurs victimes en utilisant du matériel approprié de premiers secours, y compris le Défibrillateur Automatisé Externe (DAE).
                             </p>
                         </div>
                     </div>
@@ -689,7 +755,7 @@ section {
                                         <i class="fas fa-check-circle text-blue-400"></i> PSE 1
                                     </p>
                                     <div class="ml-12 border-l border-white/20 pl-4">
-                                        <p class="text-blue-200 text-sm italic">6 modules internationaux</p>
+                                        <p class="text-blue-200 text-sm italic">9 modules internationaux</p>
                                     </div>
                                 </div>
                                 <div>
@@ -754,10 +820,10 @@ section {
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                    <img src="/assets/img/forms/psc1.jpg" class="training-img w-full h-full object-cover" alt="Formation PSC 1">
+                    <img src="/assets/img/PSC1/psc1.jpg" class="training-img w-full h-full object-cover" alt="Formation PSC 1">
                 </div>
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                    <img src="/assets/img/forms/psc2.jpg" class="training-img w-full h-full object-cover" alt="Formation PSC 2">
+                    <img src="/assets/img/PSC1/psc2.jpg" class="training-img w-full h-full object-cover" alt="Formation PSC 2">
                 </div>
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
                     <img src="/assets/img/forms/psc3.jpg" class="training-img w-full h-full object-cover" alt="Formation PSC 3">
@@ -787,7 +853,7 @@ section {
                         <span class="p-3 bg-green-50 rounded-xl text-green-600">
                             <i class="fas fa-bullseye"></i>
                         </span>
-                        Objectifs de la Formation
+                        Objectif de la Formation
                     </h3>
                     <div class="bg-white border-2 border-slate-100 p-8 rounded-[2.5rem] shadow-sm">
                         <p class="text-gray-600 font-medium text-lg leading-relaxed">
@@ -812,19 +878,28 @@ section {
                         </h3>
                         <div class="ml-12 space-y-3 border-l border-white/20 pl-6">
                             <p class="text-green-100 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> Protection et Alerte
+                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> La Prévention / la Protection
                             </p>
                             <p class="text-green-100 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> Malaises et Étouffement
+                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> L'Alerte
                             </p>
                             <p class="text-green-100 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> Perte de connaissance
+                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> L'Obstruction totale et brutale des voies aériennes ( Etouffement )
                             </p>
                             <p class="text-green-100 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> Arrêt cardiaque
+                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> Les Hémorragies externes ( saignements abondants )
                             </p>
                             <p class="text-green-100 text-sm flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> Saignements et Traumatismes
+                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> La Perte de connaissance
+                            </p>
+                            <p class="text-green-100 text-sm flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> L'Arrêt cardiaque
+                            </p>
+                            <p class="text-green-100 text-sm flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> Les Malaises
+                            </p>
+                            <p class="text-green-100 text-sm flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span> Les Traumatismes
                             </p>
                         </div>
                     </div>
@@ -902,7 +977,7 @@ section {
                     </h3>
                     <div class="bg-white border-2 border-slate-100 p-8 rounded-[2.5rem] shadow-sm">
                         <p class="text-gray-600 font-medium text-lg leading-relaxed">
-                            L’acquisition des compétences qui permettent d’intervenir efficacement et en toute sécurité lors d’un accident survenant en milieu confiné.
+                            L’acquisition des compétences qui permettent de travailler et de pouvoir intervenir efficacement et en toute sécurité en milieu confiné.
                         </p>
                     </div>
                 </div>
@@ -924,9 +999,9 @@ section {
                         <div class="ml-12">
                             <p class="text-emerald-100 text-xl font-bold flex items-center gap-3">
                                 <i class="fas fa-check-double text-emerald-400"></i>
-                                7 modules internationaux
+                                7 modules internationaux 
                             </p>
-                            <p class="text-emerald-300 text-sm mt-2 italic">Spécifiques à l'extraction et au sauvetage en zone exiguë.</p>
+                            <p class="text-emerald-300 text-sm mt-2 italic">Spécifiques à l'extraction et au sauvetage en milieu confiné.</p>
                         </div>
                     </div>
 
@@ -971,10 +1046,10 @@ section {
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                    <img src="/assets/img/forms/dae1.jpeg" class="training-img w-full h-full object-cover" alt="Session UDAE 1">
+                    <img src="/assets/img/forms/dae1.jpg" class="training-img w-full h-full object-cover" alt="Session UDAE 1">
                 </div>
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                    <img src="/assets/img/forms/dae2.jpg" class="training-img w-full h-full object-cover" alt="Session UDAE 2">
+                    <img src="/assets/img/DAE/photo2.jpg" class="training-img w-full h-full object-cover" alt="Session UDAE 2">
                 </div>
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
                     <img src="/assets/img/forms/psmc3.jpg" class="training-img w-full h-full object-cover" alt="Session UDAE 3">
@@ -991,10 +1066,10 @@ section {
                     </h3>
                     <div class="space-y-6">
                         <p class="text-xl text-gray-600 leading-relaxed italic border-l-4 border-emerald-500 pl-6 bg-emerald-50/30 py-6 rounded-r-3xl">
-                            L’arrêt cardiaque est une urgence vitale absolue. La maîtrise de la réanimation cardio-pulmonaire (RCP) constitue un atout majeur pour la survie des victimes.
+                            L’arrêt cardiaque est une urgence absolue, le pronostic est toujours fatal en absence de prise en charge. Le secouriste ne dispose que de 3 à 4 minutes pour sauver la victime, en pratiquant rapidement la Réanimation Cardio-Pulmonaire (RCP), et en utilisant un Défibrillateur Automatisé Externe (DAE).
                         </p>
                         <p class="text-gray-600 text-lg leading-relaxed px-2">
-                            L’utilisation précoce du défibrillateur automatisé externe (DAE) représente aujourd’hui l’intervention la plus efficace dans la prise en charge de ces situations. La formation à l’Utilisation du Défibrillateur Automatisé Externe est une obligation civique majeure.
+                            L’utilisation précoce du Défibrillateur Automatisé Externe (DAE) représente aujourd’hui l’intervention la plus efficace dans la prise en charge de cette urgence. La formation à l’utilisation de cet appareil est une obligation civique majeure.
                         </p>
                     </div>
                 </div>
@@ -1008,7 +1083,7 @@ section {
                     </h3>
                     <div class="bg-white border-2 border-slate-100 p-8 rounded-[2.5rem] shadow-sm">
                         <p class="text-gray-600 font-medium text-lg leading-relaxed">
-                            L’acquisition des compétences qui permettent d’identifier rapidement un arrêt cardiaque et d’utiliser correctement et en toute sécurité un DAE, en association avec une réanimation cardio-pulmonaire de qualité, afin d’augmenter les chances de survie de la victime.
+                            L’acquisition des compétences qui permettent de reconnaître rapidement un arrêt cardiaque et de pratiquer immédiatement une Réanimation Cardio-Pulmonaire (RCP) efficace associée à une Défibrillation Automatisée Externe, afin d’augmenter les chances de survie de la victime.
                         </p>
                     </div>
                 </div>
@@ -1042,7 +1117,7 @@ section {
                                 <div>
                                     <h4 class="font-black uppercase text-xs tracking-[0.2em] text-emerald-100 mb-2 text-balance">Contenu pédagogique</h4>
                                     <p class="text-emerald-50 text-sm leading-relaxed">
-                                        Elle se fait sur une durée de 4 heures concentrées sur la chaîne de survie, la mise en place des électrodes et la sécurité de l'opérateur.
+                                        Elle se fait sur une durée de 4 heures concentrées sur la chaîne de survie, la mise en place des électrodes et l'utilisation de l'appareil en tenant compte de la sécurité du secouriste, de la victime et des tiers. La formation est essentiellement pratique sur mannequins et sur un Défibrillateur Automatisé Externe (DAE) de formation.
                                     </p>
                                 </div>
                             </div>
@@ -1110,11 +1185,11 @@ section {
                         <span class="p-3 bg-blue-50 rounded-xl text-blue-700">
                             <i class="fas fa-bullseye"></i>
                         </span>
-                        Objectifs de la Formation
+                        Objectif de la Formation
                     </h3>
                     <div class="bg-white border-2 border-slate-100 p-8 rounded-[2.5rem] shadow-sm">
                         <p class="text-gray-600 font-medium text-lg leading-relaxed">
-                            L’acquisition des compétences qui permettent d’identifier une situation d’urgence, de se protéger, d’alerter efficacement les secours et de réaliser les gestes de premiers secours adaptés.
+                            L’acquisition des compétences qui permettent d’identifier une situation d’urgence, de se protéger, de protéger les tiers, d’alerter efficacement les secours et de réaliser les gestes de premiers secours adaptés.
                         </p>
                     </div>
                 </div>
@@ -1131,7 +1206,7 @@ section {
                             <span class="w-10 h-10 bg-white text-blue-700 rounded-full flex items-center justify-center text-sm">
                                 <i class="fas fa-book-open"></i>
                             </span>
-                            9 Modules Internationaux
+                            6 Modules Internationaux
                         </h3>
                         <div class="ml-12 space-y-2 border-l border-white/20 pl-6">
                             <p class="text-blue-100 text-sm italic">Principes généraux du secours</p>
@@ -1145,7 +1220,7 @@ section {
                         <div class="bg-white/10 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 relative group text-center md:text-left">
                             <h4 class="font-black uppercase text-xs tracking-[0.3em] text-blue-200 mb-4">DURÉE</h4>
                             <div class="flex items-end justify-center md:justify-start gap-3">
-                                <p class="text-5xl font-black">6 <span class="text-2xl font-light">à</span> 8</p>
+                                <p class="text-5xl font-black">6 <span class="text-2xl font-light"></span> </p>
                                 <p class="text-xl font-bold mb-1 uppercase text-blue-200 tracking-tighter">Heures (1 jour)</p>
                             </div>
                             <i class="fas fa-clock absolute top-10 right-10 text-4xl opacity-20 group-hover:rotate-12 transition-transform"></i>
@@ -1179,7 +1254,7 @@ section {
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                    <img src="/assets/img/forms/route1.jpeg" class="training-img w-full h-full object-cover" alt="Intervention Route 1">
+                    <img src="/assets/img/PSR/psr1.png" class="training-img w-full h-full object-cover" alt="Intervention Route 1">
                 </div>
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
                     <img src="/assets/img/forms/route2.jpeg" class="training-img w-full h-full object-cover" alt="Intervention Route 2">
@@ -1276,26 +1351,26 @@ section {
         <div class="p-8 md:p-16">
             <div class="flex flex-col md:flex-row items-center gap-10 mb-16 border-b border-gray-100 pb-12">
                 <div class="w-40 h-40 flex-shrink-0 bg-white shadow-xl rounded-full p-2 flex items-center justify-center border border-green-50">
-                    <img src="/assets/img/forms/sport.png" alt="Logo PSMS" class="w-full h-auto rounded-full">
+                    <img src="/assets/img/forms/sport.png" alt="Logo SPORT" class="w-full h-auto rounded-full">
                 </div>
                 <div class="text-center md:text-left">
                     <h2 class="text-green-600 font-black text-sm uppercase tracking-[0.3em] mb-2">Fiche Technique de la Formation</h2>
                     <h1 class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">
-                        PSMS <span class="text-gray-400 font-light">ou</span> <br>
-                        <span class="text-green-600">Premiers Secours en Milieu Sportif</span>
+                        SPORT <span class="text-gray-400 font-light">ou</span> <br>
+                        <span class="text-green-600">Dispositif de Secours en Événements Sportifs</span>
                     </h1>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                    <img src="/assets/img/forms/sport1.jpg" class="training-img w-full h-full object-cover" alt="Intervention Sport 1">
+                    <img src="/assets/img/SPORT/photo1.jpg" class="training-img w-full h-full object-cover" alt="Intervention Sport 1">
                 </div>
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                    <img src="/assets/img/forms/sport2.jpg" class="training-img w-full h-full object-cover" alt="Intervention Sport 2">
+                    <img src="/assets/img/SPORT/photo2.jpg" class="training-img w-full h-full object-cover" alt="Intervention Sport 2">
                 </div>
                 <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
-                    <img src="/assets/img/forms/sport3.jpg" class="training-img w-full h-full object-cover" alt="Intervention Sport 3">
+                    <img src="/assets/img/SPORT/photo1.jpg" class="training-img w-full h-full object-cover" alt="Intervention Sport 3">
                 </div>
             </div>
 
@@ -1309,10 +1384,10 @@ section {
                     </h3>
                     <div class="space-y-6">
                         <p class="text-xl text-gray-600 leading-relaxed italic border-l-4 border-green-500 pl-6 bg-green-50/30 py-6 rounded-r-3xl">
-                            Dans le milieu sportif, les traumatismes, malaises et urgences vitales (comme l’arrêt cardiaque) peuvent survenir à tout moment, souvent en l’absence immédiate de personnel médical qualifié.
+                            Compétitions, matchs et manifestations sportives rassemblent un public nombreux dans un environnement où le risque d'accident ou de malaise est réel et où les secours publics peuvent mettre du temps à intervenir.
                         </p>
                         <p class="text-gray-600 text-lg leading-relaxed px-2">
-                            Les premières minutes étant déterminantes, les encadreurs, arbitres et pratiquants doivent être capables d’intervenir rapidement et efficacement pour sécuriser la pratique.
+                            L'organisateur d'un événement sportif a l'obligation de mettre en place un dispositif prévisionnel de secours adapté à l'effectif du public, à la discipline et aux risques identifiés.
                         </p>
                     </div>
                 </div>
@@ -1326,7 +1401,7 @@ section {
                     </h3>
                     <div class="bg-white border-2 border-slate-100 p-8 rounded-[2.5rem] shadow-sm">
                         <p class="text-gray-600 font-medium text-lg leading-relaxed">
-                            Acquérir les compétences pour protéger la victime, alerter les secours et réaliser les gestes de premiers secours (notamment face aux traumatismes et à l’arrêt cardiaque), afin de préserver la vie, limiter les complications et sécuriser la pratique sportive.
+                            Doter les organisateurs et les équipes de secouristes des compétences nécessaires pour évaluer les risques, dimensionner et déployer un poste de secours, et assurer la prise en charge des victimes lors d'un événement sportif.
                         </p>
                     </div>
                 </div>
@@ -1346,16 +1421,113 @@ section {
                             Volume Horaire
                         </h3>
                         <div class="ml-12">
-                            <p class="text-7xl font-black">14h</p>
-                            <p class="text-2xl font-bold text-green-300 uppercase mt-2">2 Jours de formation</p>
+                            <p class="text-7xl font-black">Sur</p>
+                            <p class="text-2xl font-bold text-green-300 uppercase mt-2">Mesure, selon l'événement</p>
                         </div>
                     </div>
 
                     <div class="flex flex-col justify-center items-center lg:items-start">
                         <p class="text-green-100 mb-6 text-center lg:text-left italic">
+                            Organisateurs, clubs, fédérations : sécurisez vos compétitions et vos événements.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PSMS -->
+ <div id="modal-psms" class="fixed inset-0 p-4 md:p-8 bg-slate-900/80 backdrop-blur-sm modal-hidden flex items-center justify-center">
+    <div class="tech-sheet w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-[3rem] shadow-2xl modal-open-anim relative bg-white" style=" border-top: 8px solid #d97706;">
+        <div id="close-psms" class="absolute top-8 right-8 cursor-pointer hover:rotate-90 transition-transform text-amber-700 z-50">
+            <i class="fas fa-times text-3xl"></i>
+        </div>
+
+        <div class="p-8 md:p-16">
+            <div class="flex flex-col md:flex-row items-center gap-10 mb-16 border-b border-gray-100 pb-12">
+                <div class="w-40 h-40 flex-shrink-0 bg-white shadow-xl rounded-full p-2 flex items-center justify-center border border-amber-50">
+                    <img src="/assets/img/forms/sport.png" alt="Logo PSMS" class="w-full h-auto rounded-full">
+                </div>
+                <div class="text-center md:text-left">
+                    <h2 class="text-amber-600 font-black text-sm uppercase tracking-[0.3em] mb-2">Fiche Technique de la Formation</h2>
+                    <h1 class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">
+                        PSMS <span class="text-gray-400 font-light">ou</span> <br>
+                        <span class="text-amber-600">Premiers Secours en Milieu Sportif</span>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
+                    <img src="/assets/img/SPORT/photo2.jpg" class="training-img w-full h-full object-cover" alt="Formation PSMS 1">
+                </div>
+                <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
+                    <img src="/assets/img/SPORT/photo1.jpg" class="training-img w-full h-full object-cover" alt="Formation PSMS 2">
+                </div>
+                <div class="rounded-3xl overflow-hidden h-64 shadow-lg border-4 border-white">
+                    <img src="/assets/img/SPORT/photo2.jpg" class="training-img w-full h-full object-cover" alt="Formation PSMS 3">
+                </div>
+            </div>
+
+            <div class="space-y-12">
+                <div class="w-full" data-aos="fade-up">
+                    <h3 class="text-2xl font-black text-slate-900 mb-6 flex items-center gap-4">
+                        <span class="p-3 bg-amber-50 rounded-xl text-amber-600">
+                            <i class="fas fa-running"></i>
+                        </span>
+                        Contexte Sportif
+                    </h3>
+                    <div class="space-y-6">
+                        <p class="text-xl text-gray-600 leading-relaxed italic border-l-4 border-amber-500 pl-6 bg-amber-50/30 py-6 rounded-r-3xl">
+                            Dans le milieu sportif, les traumatismes, malaises et urgences vitales (comme l'arrêt cardiaque) peuvent survenir à tout moment, souvent en l'absence immédiate de personnel médical qualifié.
+                        </p>
+                        <p class="text-gray-600 text-lg leading-relaxed px-2">
+                            Les premières minutes étant déterminantes, les encadreurs, arbitres et pratiquants doivent être capables d'intervenir rapidement et efficacement pour sécuriser la pratique.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-full" data-aos="fade-up">
+                    <h3 class="text-2xl font-black text-slate-900 mb-6 flex items-center gap-4">
+                        <span class="p-3 bg-amber-50 rounded-xl text-amber-600">
+                            <i class="fas fa-bullseye"></i>
+                        </span>
+                        Objectifs de la Formation
+                    </h3>
+                    <div class="bg-white border-2 border-slate-100 p-8 rounded-[2.5rem] shadow-sm">
+                        <p class="text-gray-600 font-medium text-lg leading-relaxed">
+                            Acquérir les compétences pour protéger la victime, alerter les secours et réaliser les gestes de premiers secours (notamment face aux traumatismes et à l'arrêt cardiaque), afin de préserver la vie, limiter les complications et sécuriser la pratique sportive.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-16 bg-amber-700 rounded-[3rem] p-10 text-white relative overflow-hidden shadow-2xl">
+                <div class="absolute top-0 right-0 p-12 opacity-10">
+                    <i class="fas fa-medal text-9xl"></i>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
+                    <div class="flex flex-col justify-center">
+                        <h3 class="text-2xl font-black mb-6 flex items-center gap-4">
+                            <span class="w-10 h-10 bg-white text-amber-700 rounded-full flex items-center justify-center text-sm">
+                                <i class="fas fa-clock"></i>
+                            </span>
+                            Volume Horaire
+                        </h3>
+                        <div class="ml-12">
+                            <p class="text-7xl font-black">14h</p>
+                            <p class="text-2xl font-bold text-amber-300 uppercase mt-2">2 Jours de formation</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-center items-center lg:items-start">
+                        <p class="text-amber-100 mb-6 text-center lg:text-left italic">
                             Encadreurs, arbitres, sportifs : soyez prêts à intervenir sur le terrain.
                         </p>
-                        
+
                     </div>
                 </div>
             </div>

@@ -25,6 +25,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
     <style>
     .medical-blue { color: #0056b3; }
     .bg-medical { background-color: #0056b3; }
@@ -265,13 +266,412 @@
         transform: translateY(0); 
         transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.5s;
     }
-    .slide.active .slide-content .btn-container { 
-        opacity: 1; 
-        transform: translateY(0); 
+    .slide.active .slide-content .btn-container {
+        opacity: 1;
+        transform: translateY(0);
         transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.7s;
     }
 
-    
+/* ==========================================================================
+   NAVBAR — Police unifiée, onglets actifs, sous-navigation, recherche, langue
+   ========================================================================== */
+
+/* Police dédiée (alternative gratuite à Tiempos), appliquée UNE SEULE FOIS
+   à l'ensemble des éléments de la navbar (le bloc logo/slogan n'a pas cette
+   classe et reste donc inchangé). Les icônes Font Awesome imposent leur
+   propre font-family en !important, elles ne sont donc pas affectées. */
+.nav-serif,
+.nav-serif *:not(i) {
+    font-family: 'Source Serif 4', Georgia, serif;
+}
+
+/* Onglets — état actif (page courante) : coloration + soulignement 3px,
+   conforme à la charte ("Active links underlined with a 3px Secondary Blue bar") */
+.nav-tab-link {
+    position: relative;
+    color: #444651;
+}
+
+.nav-tab-link.nav-active {
+    color: #0056b3;
+    font-weight: 600;
+}
+
+.nav-tab-link.nav-active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 3px;
+    border-radius: 9999px;
+    background-color: #0056b3;
+}
+
+/* Onglet "À propos" — indicateur d'action fluide (soulignement + chevron) */
+.nav-link-about {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-link-about a {
+    color: #444651;
+    transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-about .about-chevron-btn {
+    background: none;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    color: inherit;
+    line-height: 1;
+}
+
+.nav-link-about .about-chevron {
+    font-size: 10px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-about .about-underline {
+    position: absolute;
+    left: 0;
+    right: 18px;
+    bottom: -6px;
+    height: 3px;
+    border-radius: 9999px;
+    background-color: #0056b3;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-about:hover a,
+.nav-link-about:focus-within a,
+.nav-link-about.about-open a,
+.nav-link-about.nav-active a {
+    color: #0056b3;
+}
+
+.nav-link-about:hover .about-underline,
+.nav-link-about:focus-within .about-underline,
+.nav-link-about.about-open .about-underline,
+.nav-link-about.nav-active .about-underline {
+    transform: scaleX(1);
+}
+
+.nav-link-about:hover .about-chevron,
+.nav-link-about:focus-within .about-chevron,
+.nav-link-about.about-open .about-chevron {
+    transform: rotate(180deg);
+    color: #0056b3;
+}
+
+/* Fil d'Ariane "À propos" — sous-navigation pleine largeur, contenu centré,
+   ouverture/fermeture fluide (courbe Material standard), sans jamais casser
+   la mise en page quelle que soit la résolution */
+#about-subnav {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    width: 100%;
+    background-color: #F8FAFC;
+    border-top: 1px solid #E2E8F0;
+    box-shadow: 0 10px 20px -12px rgba(30, 58, 138, 0.12);
+    pointer-events: none;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#about-subnav.open {
+    max-height: 120px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#about-subnav .subnav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+}
+
+.subnav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444651;
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.subnav-link:hover,
+.subnav-link:focus-visible,
+.subnav-link.active {
+    color: #0056b3;
+    background-color: #E3E9FB;
+    outline: none;
+}
+
+.subnav-sep {
+    color: #c5c5d3;
+    font-size: 9px;
+}
+
+/* Recherche — champ compact toujours visible, coins arrondis 8px comme exigé */
+.nav-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 7px 12px;
+    width: 168px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-search-box:focus-within {
+    border-color: #0056b3;
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.12);
+    width: 200px;
+}
+
+.nav-search-box i {
+    color: #757682;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.nav-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    color: #1a1b21;
+    width: 100%;
+    min-width: 0;
+}
+
+.nav-search-box input::placeholder {
+    color: #9aa0ad;
+}
+
+.mobile-search-wrap {
+    padding: 0 12px 12px;
+}
+
+.mobile-search-wrap .nav-search-box {
+    width: 100%;
+    padding: 10px 14px;
+}
+
+/* Sélecteur de langue */
+#lang-switch {
+    position: relative;
+}
+
+#lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: #444651;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.2s ease;
+}
+
+#lang-toggle:hover {
+    color: #0056b3;
+}
+
+.lang-chevron {
+    font-size: 9px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#lang-switch.open .lang-chevron {
+    transform: rotate(180deg);
+}
+
+.lang-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 180px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 10px 24px -8px rgba(30, 58, 138, 0.15);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.25s;
+    z-index: 60;
+}
+
+#lang-switch.open .lang-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.lang-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #444651;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.lang-option:hover:not(.disabled) {
+    background-color: #E3E9FB;
+    color: #0056b3;
+}
+
+.lang-option.active {
+    color: #0056b3;
+    background-color: #E3E9FB;
+    font-weight: 600;
+}
+
+.lang-option.disabled {
+    color: #9aa0ad;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.lang-soon {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background-color: #F1F0F7;
+    color: #757682;
+    border-radius: 9999px;
+    padding: 2px 7px;
+}
+
+.mobile-lang-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    margin-top: 4px;
+}
+
+.mobile-lang-row > i {
+    color: #757682;
+    font-size: 14px;
+}
+
+.lang-pill {
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    border: 1px solid #E2E8F0;
+    background: #ffffff;
+    color: #444651;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.lang-pill.active {
+    background-color: #E3E9FB;
+    border-color: #0056b3;
+    color: #0056b3;
+    font-weight: 600;
+}
+
+.lang-pill.disabled {
+    color: #9aa0ad;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Mobile — sous-liens "À propos" en fil d'Ariane compact */
+.mobile-about-sublinks {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 2px solid #DCE1FF;
+    margin: 0 0 0 0.75rem;
+}
+
+.mobile-about-sublinks.open {
+    max-height: 220px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.mobile-about-sublinks a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 14px;
+    color: #444651;
+    border-radius: 0 8px 8px 0;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.mobile-about-sublinks a:hover,
+.mobile-about-sublinks a:focus-visible,
+.mobile-about-sublinks a.active {
+    color: #0056b3;
+    background-color: #EEF2FF;
+}
+
+#mobile-about-toggle {
+    color: #444651;
+    transition: color 0.2s ease;
+}
+
+#mobile-about-toggle.nav-active,
+#mobile-about-toggle.nav-active span {
+    color: #0056b3;
+    font-weight: 700;
+}
+
+#mobile-about-toggle .about-chevron {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-link {
+    display: block;
+    padding: 10px 12px;
+    color: #444651;
+    border-radius: 8px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.mobile-nav-link.nav-active {
+    color: #0056b3;
+    font-weight: 700;
+    background-color: #EEF2FF;
+}
 </style>
 </head>
 <body class="font-sans text-gray-900 bg-gray-50">
@@ -293,15 +693,43 @@
                 </div>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-8 font-medium">
-                    <a href="/index.html" class="text-blue-900 hover:text-blue-600 transition">Accueil</a>
-                    <a href="about/" class="text-gray-600 hover:text-blue-600 transition">À propos</a>
-                    <a href="formations/" class="text-gray-600 hover:text-blue-600 transition">Nos Formations </a>
+                <div class="hidden lg:flex items-center space-x-8 nav-serif font-medium">
+                    <a href="/index.html" class="nav-tab-link nav-active transition">Accueil</a>
+                    <div id="about-nav-item" class="nav-link-about">
+                        <a href="about/" id="about-trigger" class="transition">À propos</a>
+                        <button type="button" id="about-chevron-btn" class="about-chevron-btn" aria-expanded="false" aria-controls="about-subnav" aria-label="Afficher le sous-menu À propos">
+                            <i class="fas fa-chevron-down about-chevron" aria-hidden="true"></i>
+                        </button>
+                        <span class="about-underline" aria-hidden="true"></span>
+                    </div>
+                    <a href="formations/" class="nav-tab-link transition">Nos Formations </a>
                     <!-- <a href="#partenaires" class="text-gray-600 hover:text-blue-600 transition">Nos realisations</a> -->
+
+                    <div class="flex items-center gap-2 pl-3 ml-1 border-l border-gray-200">
+                        <div id="nav-search" class="nav-search-box">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                            <input type="text" id="search-input" placeholder="Rechercher..." autocomplete="off" aria-label="Rechercher sur le site">
+                        </div>
+
+                        <div id="lang-switch" class="relative">
+                            <button type="button" id="lang-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Choisir la langue">
+                                <i class="fas fa-globe" aria-hidden="true"></i>
+                                <span>FR</span>
+                                <i class="fas fa-chevron-down lang-chevron" aria-hidden="true"></i>
+                            </button>
+                            <div class="lang-menu" role="menu">
+                                <button type="button" class="lang-option active" data-lang="fr" role="menuitem">Français</button>
+                                <button type="button" class="lang-option disabled" data-lang="en" role="menuitem" disabled title="Bientôt disponible">
+                                    English <span class="lang-soon">Bientôt</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <a href="#" class="bg-medical text-white px-6 py-2 rounded-full hover:bg-blue-700 transition shadow-lg hover:shadow-blue-200">Contact</a>
                 </div>
 
-                <div class="md:hidden flex items-center">
+                <div class="lg:hidden flex items-center">
                     <button id="mobile-menu-button" class="text-blue-900 focus:outline-none text-2xl">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -309,12 +737,48 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-2 shadow-xl">
-            <a href="/index.html" class="block px-3 py-2 text-blue-900 font-bold">Accueil</a>
-            <a href="about/" class="block px-3 py-2 text-gray-600">À propos</a>
-            <a href="formations/" class="block px-3 py-2 text-gray-600">Nos Formations</a>
+        <div id="about-subnav" class="hidden lg:block" role="region" aria-label="Sous-navigation À propos">
+            <div class="subnav-inner">
+                <a href="about/" class="subnav-link">Qui sommes-nous ?</a>
+                <span class="subnav-sep"><i class="fas fa-chevron-right"></i></span>
+                <a href="about/#actualites" class="subnav-link">Actualités</a>
+                <span class="subnav-sep"><i class="fas fa-chevron-right"></i></span>
+                <a href="about/#galerie" class="subnav-link">Galerie</a>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 px-4 pt-3 pb-6 space-y-1 shadow-xl nav-serif">
+            <div class="mobile-search-wrap">
+                <div class="nav-search-box">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="mobile-search-input" placeholder="Rechercher..." autocomplete="off" aria-label="Rechercher sur le site">
+                </div>
+            </div>
+
+            <a href="/index.html" class="mobile-nav-link nav-active">Accueil</a>
+
+            <div>
+                <button type="button" id="mobile-about-toggle" class="w-full flex items-center justify-between px-3 py-2" aria-expanded="false" aria-controls="mobile-about-sublinks">
+                    <span>À propos</span>
+                    <i class="fas fa-chevron-down about-chevron" aria-hidden="true"></i>
+                </button>
+                <div id="mobile-about-sublinks" class="mobile-about-sublinks">
+                    <a href="about/">Qui sommes-nous ?</a>
+                    <a href="about/#actualites">Actualités</a>
+                    <a href="about/#galerie">Galerie</a>
+                </div>
+            </div>
+
+            <a href="formations/" class="mobile-nav-link">Nos Formations</a>
             <!-- <a href="#partenaires" class="block px-3 py-2 text-gray-600">Nos realisations</a> -->
-            <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center">Contact</a>
+
+            <div class="mobile-lang-row">
+                <i class="fas fa-globe" aria-hidden="true"></i>
+                <button type="button" class="lang-pill active" data-lang="fr">Français</button>
+                <button type="button" class="lang-pill disabled" data-lang="en" disabled title="Bientôt disponible">English</button>
+            </div>
+
+            <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center mt-2">Contact</a>
         </div>
     </nav>
 
@@ -324,9 +788,9 @@
             <div class="slide-bg" style="background-image: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.2)), url('assets/img/slid1.jpeg');"></div>
             <div class="max-w-7xl mx-auto h-full flex items-center px-4 relative z-10 slide-content">
                 <div class="md:w-3/4">
-                    <h1 class="text-4xl md:text-7xl font-black mb-6 leading-tight">Médecine d'Urgence <br>au <span class="text-yellow-400">Cameroun</span></h1>
+                    <h1 class="text-4xl md:text-7xl font-black mb-6 leading-tight">Premiers Secours <br>au <span class="text-yellow-400">Cameroun</span></h1>
                     <p class="text-lg md:text-2xl mb-8 max-w-2xl text-gray-200 border-l-4 border-yellow-500 pl-6">
-                        Médecine d'Urgence, Médecine de Catastrophe et Permiers Secours au Cameroun  .
+                        Médecine d'Urgence, Médecine de Catastrophe et Premiers Secours au Cameroun  .
                     </p>
                     <div class="btn-container">
                         <a href="#expertise" class="inline-flex items-center gap-3 bg-yellow-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-400 transition-all">
@@ -360,7 +824,7 @@
                 <div class="md:w-3/4">
                     <h1 class="text-4xl md:text-7xl font-black mb-6 leading-tight">Partenaires <br> <span class="text-green-400">Stratégiques</span></h1>
                     <p class="text-lg md:text-2xl mb-8 max-w-2xl text-gray-200 border-l-4 border-green-400 pl-6">
-                        En collaboration avec l'OMS, le MINT, le MINTP, l'ANIMS, les Facultes de Médecine et les grandes Entreprises.
+                        En collaboration avec l'OMS, le MINT, le MINTP, l'ANIMS, l'INRS, les Facultés de Médecine et les grandes Entreprises.
                     </p>
                     <div class="btn-container">
                         <a href="#expertise" class="inline-flex items-center gap-3 bg-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-500 transition-all">
@@ -400,7 +864,7 @@
                                 <i class="fas fa-user-md"></i>
                             </div>
                             <p class="text-5xl md:text-6xl font-black text-white mb-3 transform group-hover:scale-110 transition-transform duration-300">
-                                <span class="counter" data-target="500">0</span><span class="text-4xl">+</span>
+                                <span class="counter" data-target="50">0</span><span class="text-4xl">+</span>
                             </p>
                             <p class="text-blue-100 uppercase tracking-widest text-xs md:text-sm font-bold group-hover:text-white transition-colors">Médecins Membres</p>
                             <div class="mt-6 h-1 w-12 bg-yellow-400 mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
@@ -491,12 +955,12 @@
                 <div class="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-yellow-500 hover:shadow-2xl transition-all hover:-translate-y-2 reveal" style="transition-delay: 100ms;">
                     <div class="text-yellow-500 text-4xl mb-6"><i class="fas fa-hospital-symbol"></i></div>
                     <h3 class="text-xl font-bold mb-4">L'Appui Institutionnel</h3>
-                    <p class="text-gray-600 leading-relaxed">Consultance stratégique pour les institutions nationales et internationales dans la securite routiere et la gestion des catastrophes.</p> 
+                    <p class="text-gray-600 leading-relaxed">Consultance stratégique pour les institutions nationales et internationales dans la sécurité en entreprise, routière, la gestion des urgences et des catastrophes.</p> 
                 </div>
                 <div class="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-red-600 hover:shadow-2xl transition-all hover:-translate-y-2 reveal" style="transition-delay: 200ms;">
                     <div class="text-red-600 text-4xl mb-6"><i class="fas fa-ambulance"></i></div>
                     <h3 class="text-xl font-bold mb-4">L'Expertise </h3>
-                    <p class="text-gray-600 leading-relaxed">Standardisation des protocoles d'urgence selon les normes internationales de soins critiques.</p>
+                    <p class="text-gray-600 leading-relaxed">Standardisation des protocoles de premiers secours selon les normes internationales.</p>
                 </div>
             </div>
         </div>
@@ -528,6 +992,122 @@
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
         });
+
+        // 2bis. Sous-navigation "À propos" en fil d'Ariane (desktop)
+        (function () {
+            const aboutItem = document.getElementById('about-nav-item');
+            const aboutSubnav = document.getElementById('about-subnav');
+            const aboutChevronBtn = document.getElementById('about-chevron-btn');
+            if (!aboutItem || !aboutSubnav) return;
+
+            let closeTimer;
+
+            function openAboutSubnav() {
+                clearTimeout(closeTimer);
+                aboutItem.classList.add('about-open');
+                aboutSubnav.classList.add('open');
+                if (aboutChevronBtn) aboutChevronBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeAboutSubnav() {
+                aboutItem.classList.remove('about-open');
+                aboutSubnav.classList.remove('open');
+                if (aboutChevronBtn) aboutChevronBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            function scheduleClose() {
+                clearTimeout(closeTimer);
+                closeTimer = setTimeout(closeAboutSubnav, 200);
+            }
+
+            [aboutItem, aboutSubnav].forEach((el) => {
+                el.addEventListener('mouseenter', openAboutSubnav);
+                el.addEventListener('mouseleave', scheduleClose);
+            });
+
+            aboutItem.addEventListener('focusin', openAboutSubnav);
+            aboutItem.addEventListener('focusout', (e) => {
+                if (!aboutItem.contains(e.relatedTarget) && !aboutSubnav.contains(e.relatedTarget)) {
+                    scheduleClose();
+                }
+            });
+
+            if (aboutChevronBtn) {
+                aboutChevronBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (aboutSubnav.classList.contains('open')) {
+                        closeAboutSubnav();
+                    } else {
+                        openAboutSubnav();
+                    }
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (!aboutItem.contains(e.target) && !aboutSubnav.contains(e.target)) {
+                    closeAboutSubnav();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeAboutSubnav();
+            });
+        })();
+
+        // 2ter. Accordéon "À propos" (mobile)
+        (function () {
+            const mobileAboutToggle = document.getElementById('mobile-about-toggle');
+            const mobileAboutSublinks = document.getElementById('mobile-about-sublinks');
+            if (!mobileAboutToggle || !mobileAboutSublinks) return;
+
+            mobileAboutToggle.addEventListener('click', () => {
+                const isOpen = mobileAboutSublinks.classList.toggle('open');
+                const chevron = mobileAboutToggle.querySelector('.about-chevron');
+                if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                mobileAboutToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+        })();
+
+        // 2quater. Recherche navbar (desktop + mobile) — champ toujours visible
+        function runSiteSearch(query) {
+            const q = query.trim();
+            if (!q) return;
+            const url = 'https://www.google.com/search?q=' + encodeURIComponent('site:' + window.location.hostname + ' ' + q);
+            window.open(url, '_blank', 'noopener');
+        }
+
+        document.querySelectorAll('.nav-search-box').forEach((box) => {
+            const icon = box.querySelector('i');
+            const input = box.querySelector('input');
+            if (!input) return;
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); runSiteSearch(input.value); }
+            });
+            if (icon) {
+                icon.addEventListener('click', () => {
+                    if (input.value.trim()) runSiteSearch(input.value);
+                    else input.focus();
+                });
+            }
+        });
+
+        // 2quinquies. Sélecteur de langue (desktop)
+        (function () {
+            const switcher = document.getElementById('lang-switch');
+            const toggle = document.getElementById('lang-toggle');
+            if (!switcher || !toggle) return;
+
+            toggle.addEventListener('click', () => {
+                const isOpen = switcher.classList.toggle('open');
+                toggle.setAttribute('aria-expanded', String(isOpen));
+            });
+            document.addEventListener('click', (e) => {
+                if (!switcher.contains(e.target)) switcher.classList.remove('open');
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') switcher.classList.remove('open');
+            });
+        })();
 
         // 3. Animation Reveal au Scroll
         const observerOptions = { threshold: 0.15 };

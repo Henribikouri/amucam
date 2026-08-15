@@ -26,6 +26,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
     :root {
@@ -143,15 +144,43 @@
                 </div>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-8 font-medium">
-                    <a href="/index.html" class="text-blue-900 hover:text-blue-600 transition">Accueil</a>
-                    <a href="index.html" class="text-gray-600 hover:text-blue-600 transition">À propos</a>
-                    <a href="/formations/" class="text-gray-600 hover:text-blue-600 transition">Nos Formations </a>
+                <div class="hidden lg:flex items-center space-x-8 nav-serif font-medium">
+                    <a href="/index.html" class="nav-tab-link transition">Accueil</a>
+                    <div id="about-nav-item" class="nav-link-about nav-active">
+                        <a href="index.html" id="about-trigger" class="transition">À propos</a>
+                        <button type="button" id="about-chevron-btn" class="about-chevron-btn" aria-expanded="false" aria-controls="about-subnav" aria-label="Afficher le sous-menu À propos">
+                            <i class="fas fa-chevron-down about-chevron" aria-hidden="true"></i>
+                        </button>
+                        <span class="about-underline" aria-hidden="true"></span>
+                    </div>
+                    <a href="/formations/" class="nav-tab-link transition">Nos Formations </a>
                     <!-- <a href="#partenaires" class="text-gray-600 hover:text-blue-600 transition">Nos realisations</a> -->
+
+                    <div class="flex items-center gap-2 pl-3 ml-1 border-l border-gray-200">
+                        <div id="nav-search" class="nav-search-box">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                            <input type="text" id="search-input" placeholder="Rechercher..." autocomplete="off" aria-label="Rechercher sur le site">
+                        </div>
+
+                        <div id="lang-switch" class="relative">
+                            <button type="button" id="lang-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Choisir la langue">
+                                <i class="fas fa-globe" aria-hidden="true"></i>
+                                <span>FR</span>
+                                <i class="fas fa-chevron-down lang-chevron" aria-hidden="true"></i>
+                            </button>
+                            <div class="lang-menu" role="menu">
+                                <button type="button" class="lang-option active" data-lang="fr" role="menuitem">Français</button>
+                                <button type="button" class="lang-option disabled" data-lang="en" role="menuitem" disabled title="Bientôt disponible">
+                                    English <span class="lang-soon">Bientôt</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <a href="#" class="bg-medical text-white px-6 py-2 rounded-full hover:bg-blue-700 transition shadow-lg hover:shadow-blue-200">Contact</a>
                 </div>
 
-                <div class="md:hidden flex items-center">
+                <div class="lg:hidden flex items-center">
                     <button id="mobile-menu-button" class="text-blue-900 focus:outline-none text-2xl">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -159,12 +188,48 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-2 shadow-xl">
-            <a href="/index.html" class="block px-3 py-2 text-blue-900 font-bold">Accueil</a>
-            <a href="index.html" class="block px-3 py-2 text-gray-600">À propos</a>
-            <a href="/formations/" class="block px-3 py-2 text-gray-600">Nos Formations</a>
+        <div id="about-subnav" class="hidden lg:block" role="region" aria-label="Sous-navigation À propos">
+            <div class="subnav-inner">
+                <a href="index.html" class="subnav-link active">Qui sommes-nous ?</a>
+                <span class="subnav-sep"><i class="fas fa-chevron-right"></i></span>
+                <a href="index.html#actualites" class="subnav-link">Actualités</a>
+                <span class="subnav-sep"><i class="fas fa-chevron-right"></i></span>
+                <a href="index.html#galerie" class="subnav-link">Galerie</a>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 px-4 pt-3 pb-6 space-y-1 shadow-xl nav-serif">
+            <div class="mobile-search-wrap">
+                <div class="nav-search-box">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="mobile-search-input" placeholder="Rechercher..." autocomplete="off" aria-label="Rechercher sur le site">
+                </div>
+            </div>
+
+            <a href="/index.html" class="mobile-nav-link">Accueil</a>
+
+            <div>
+                <button type="button" id="mobile-about-toggle" class="w-full flex items-center justify-between px-3 py-2 nav-active" aria-expanded="false" aria-controls="mobile-about-sublinks">
+                    <span>À propos</span>
+                    <i class="fas fa-chevron-down about-chevron" aria-hidden="true"></i>
+                </button>
+                <div id="mobile-about-sublinks" class="mobile-about-sublinks">
+                    <a href="index.html" class="active">Qui sommes-nous ?</a>
+                    <a href="index.html#actualites">Actualités</a>
+                    <a href="index.html#galerie">Galerie</a>
+                </div>
+            </div>
+
+            <a href="/formations/" class="mobile-nav-link">Nos Formations</a>
             <!-- <a href="#partenaires" class="block px-3 py-2 text-gray-600">Nos realisations</a> -->
-            <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center">Contact</a>
+
+            <div class="mobile-lang-row">
+                <i class="fas fa-globe" aria-hidden="true"></i>
+                <button type="button" class="lang-pill active" data-lang="fr">Français</button>
+                <button type="button" class="lang-pill disabled" data-lang="en" disabled title="Bientôt disponible">English</button>
+            </div>
+
+            <a href="#" class="block px-3 py-2 bg-medical text-white rounded-lg text-center mt-2">Contact</a>
         </div>
     </nav>
      <div class="fixed top-0 left-0 w-full h-1 z-[100]">

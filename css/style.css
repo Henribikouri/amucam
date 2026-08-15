@@ -1,6 +1,6 @@
 .medical-blue { color: #0056b3; }
     .bg-medical { background-color: #0056b3; }
-    
+
 
 
     /* Texture de grille technique (Le côté Ingénieur) */
@@ -24,12 +24,12 @@
 
         /* On réduit la taille du titre pour gagner de l'espace */
         h1 {
-            font-size: 2.5rem !important; 
+            font-size: 2.5rem !important;
             margin-bottom: 1rem !important;
         }
 
         /* On cache l'indicateur de scroll en mode paysage court car il gêne */
-        .scroll-indicator-container, 
+        .scroll-indicator-container,
         .absolute.bottom-4 {
             display: none !important;
         }
@@ -40,16 +40,16 @@
         background-attachment: scroll; /* Évite les bugs de saccades au scroll mobile */
     }
 
-    
+
 
     @media (min-width: 768px) {
         .ticker-container {
             top: 6rem; /* top-24 sur PC */
         }
-        
+
         /* On s'assure que le contenu du Hero a assez d'espace en haut sur PC */
         /* .max-w-7xl {
-            padding-top: 120px; 
+            padding-top: 120px;
         } */
     }
 
@@ -60,7 +60,7 @@
         }
     }
 
-    
+
     /* 3. Style de l'icône (Burger & Croix) */
     #mobile-menu-button {
         transition: all 0.3s ease;
@@ -68,7 +68,7 @@
 
     /* On force la couleur bleue sur l'icône i, qu'elle soit burger ou croix */
     #mobile-menu-button i {
-        color: #0056b3 !important; 
+        color: #0056b3 !important;
         transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
 
@@ -184,7 +184,7 @@
         .slide-bg {
             background-position: 50% 30%; /* Remonte un peu l'image pour voir les visages/sujets */
         }
-        
+
         /* Les points de navigation remontent pour être bien visibles */
         .slider-dots {
             bottom: 20px !important;
@@ -198,7 +198,7 @@
         }
         /* On remonte légèrement le contenu pour l'équilibre visuel */
         .slide-content {
-            padding-top: 40px; 
+            padding-top: 40px;
         }
     }
 
@@ -220,25 +220,426 @@
         position: absolute;
         inset: 0;
         background-size: cover;
-        /* "center 20%" permet de garder le haut des images (visages, logos) 
+        /* "center 20%" permet de garder le haut des images (visages, logos)
            bien visible même quand on réduit la hauteur */
-        background-position: center 20%; 
+        background-position: center 20%;
         transform: scale(1.1);
         transition: transform 6s linear;
     }
 
-    .slide.active .slide-content h1 { 
-        opacity: 1; 
-        transform: translateY(0); 
+    .slide.active .slide-content h1 {
+        opacity: 1;
+        transform: translateY(0);
         transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.3s;
     }
-    .slide.active .slide-content p { 
-        opacity: 1; 
-        transform: translateY(0); 
+    .slide.active .slide-content p {
+        opacity: 1;
+        transform: translateY(0);
         transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.5s;
     }
-    .slide.active .slide-content .btn-container { 
-        opacity: 1; 
-        transform: translateY(0); 
+    .slide.active .slide-content .btn-container {
+        opacity: 1;
+        transform: translateY(0);
         transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.7s;
     }
+
+/* ==========================================================================
+   NAVBAR — Police unifiée, onglets actifs, sous-navigation, recherche, langue
+   ========================================================================== */
+
+/* Police dédiée (alternative gratuite à Tiempos), appliquée UNE SEULE FOIS
+   à l'ensemble des éléments de la navbar (le bloc logo/slogan n'a pas cette
+   classe et reste donc inchangé). Les icônes Font Awesome imposent leur
+   propre font-family en !important, elles ne sont donc pas affectées. */
+.nav-serif,
+.nav-serif *:not(i) {
+    font-family: 'Source Serif 4', Georgia, serif;
+}
+
+/* Onglets — état actif (page courante) : coloration + soulignement 3px,
+   conforme à la charte ("Active links underlined with a 3px Secondary Blue bar") */
+.nav-tab-link {
+    position: relative;
+    color: #444651;
+}
+
+.nav-tab-link.nav-active {
+    color: #0056b3;
+    font-weight: 600;
+}
+
+.nav-tab-link.nav-active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 3px;
+    border-radius: 9999px;
+    background-color: #0056b3;
+}
+
+/* Onglet "À propos" — indicateur d'action fluide (soulignement + chevron) */
+.nav-link-about {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-link-about a {
+    color: #444651;
+    transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-about .about-chevron-btn {
+    background: none;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    color: inherit;
+    line-height: 1;
+}
+
+.nav-link-about .about-chevron {
+    font-size: 10px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-about .about-underline {
+    position: absolute;
+    left: 0;
+    right: 18px;
+    bottom: -6px;
+    height: 3px;
+    border-radius: 9999px;
+    background-color: #0056b3;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-about:hover a,
+.nav-link-about:focus-within a,
+.nav-link-about.about-open a,
+.nav-link-about.nav-active a {
+    color: #0056b3;
+}
+
+.nav-link-about:hover .about-underline,
+.nav-link-about:focus-within .about-underline,
+.nav-link-about.about-open .about-underline,
+.nav-link-about.nav-active .about-underline {
+    transform: scaleX(1);
+}
+
+.nav-link-about:hover .about-chevron,
+.nav-link-about:focus-within .about-chevron,
+.nav-link-about.about-open .about-chevron {
+    transform: rotate(180deg);
+    color: #0056b3;
+}
+
+/* Fil d'Ariane "À propos" — sous-navigation pleine largeur, contenu centré,
+   ouverture/fermeture fluide (courbe Material standard), sans jamais casser
+   la mise en page quelle que soit la résolution */
+#about-subnav {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    width: 100%;
+    background-color: #F8FAFC;
+    border-top: 1px solid #E2E8F0;
+    box-shadow: 0 10px 20px -12px rgba(30, 58, 138, 0.12);
+    pointer-events: none;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#about-subnav.open {
+    max-height: 120px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#about-subnav .subnav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+}
+
+.subnav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444651;
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.subnav-link:hover,
+.subnav-link:focus-visible,
+.subnav-link.active {
+    color: #0056b3;
+    background-color: #E3E9FB;
+    outline: none;
+}
+
+.subnav-sep {
+    color: #c5c5d3;
+    font-size: 9px;
+}
+
+/* Recherche — champ compact toujours visible, coins arrondis 8px comme exigé */
+.nav-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 7px 12px;
+    width: 168px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-search-box:focus-within {
+    border-color: #0056b3;
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.12);
+    width: 200px;
+}
+
+.nav-search-box i {
+    color: #757682;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.nav-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    color: #1a1b21;
+    width: 100%;
+    min-width: 0;
+}
+
+.nav-search-box input::placeholder {
+    color: #9aa0ad;
+}
+
+.mobile-search-wrap {
+    padding: 0 12px 12px;
+}
+
+.mobile-search-wrap .nav-search-box {
+    width: 100%;
+    padding: 10px 14px;
+}
+
+/* Sélecteur de langue */
+#lang-switch {
+    position: relative;
+}
+
+#lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: #444651;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.2s ease;
+}
+
+#lang-toggle:hover {
+    color: #0056b3;
+}
+
+.lang-chevron {
+    font-size: 9px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#lang-switch.open .lang-chevron {
+    transform: rotate(180deg);
+}
+
+.lang-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 180px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 10px 24px -8px rgba(30, 58, 138, 0.15);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.25s;
+    z-index: 60;
+}
+
+#lang-switch.open .lang-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.lang-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #444651;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.lang-option:hover:not(.disabled) {
+    background-color: #E3E9FB;
+    color: #0056b3;
+}
+
+.lang-option.active {
+    color: #0056b3;
+    background-color: #E3E9FB;
+    font-weight: 600;
+}
+
+.lang-option.disabled {
+    color: #9aa0ad;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.lang-soon {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background-color: #F1F0F7;
+    color: #757682;
+    border-radius: 9999px;
+    padding: 2px 7px;
+}
+
+.mobile-lang-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    margin-top: 4px;
+}
+
+.mobile-lang-row > i {
+    color: #757682;
+    font-size: 14px;
+}
+
+.lang-pill {
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    border: 1px solid #E2E8F0;
+    background: #ffffff;
+    color: #444651;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.lang-pill.active {
+    background-color: #E3E9FB;
+    border-color: #0056b3;
+    color: #0056b3;
+    font-weight: 600;
+}
+
+.lang-pill.disabled {
+    color: #9aa0ad;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Mobile — sous-liens "À propos" en fil d'Ariane compact */
+.mobile-about-sublinks {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 2px solid #DCE1FF;
+    margin: 0 0 0 0.75rem;
+}
+
+.mobile-about-sublinks.open {
+    max-height: 220px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.mobile-about-sublinks a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 14px;
+    color: #444651;
+    border-radius: 0 8px 8px 0;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.mobile-about-sublinks a:hover,
+.mobile-about-sublinks a:focus-visible,
+.mobile-about-sublinks a.active {
+    color: #0056b3;
+    background-color: #EEF2FF;
+}
+
+#mobile-about-toggle {
+    color: #444651;
+    transition: color 0.2s ease;
+}
+
+#mobile-about-toggle.nav-active,
+#mobile-about-toggle.nav-active span {
+    color: #0056b3;
+    font-weight: 700;
+}
+
+#mobile-about-toggle .about-chevron {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-link {
+    display: block;
+    padding: 10px 12px;
+    color: #444651;
+    border-radius: 8px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.mobile-nav-link.nav-active {
+    color: #0056b3;
+    font-weight: 700;
+    background-color: #EEF2FF;
+}
